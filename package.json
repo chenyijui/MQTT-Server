@@ -14,8 +14,10 @@
   "author": "Tomato",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "md5": "^2.2.1",
     "mongoose": "^5.0.11",
     "mosca": "^2.8.0"
   }

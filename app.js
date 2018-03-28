@@ -24,6 +24,8 @@ app.use(cors({
 }));
 // Require User routes
 require('./app/routes/routes.user')(app);
+require('./app/routes/routes.thing')(app);
+require('./app/routes/routes.device')(app);
 
 
 app.get('/', (req, res) => res.send({message:'hello'}))

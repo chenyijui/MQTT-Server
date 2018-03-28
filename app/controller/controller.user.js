@@ -2,7 +2,7 @@ const User = require('../module/module.user');
 
 exports.creat = function(req, res){
     //creat user and save user
-    if(!req.body.name){
+    if(!req.body.name&&!req.body.username&&!req.body.password){
         res.status(400).send({message:'Users can not be empty'});
     }
     var user = new User({
@@ -46,11 +46,11 @@ exports.update = function (req ,res){
         if(err){
             res.status(500).send({message: "some error"});
         }
-        user.role = req.body.role;
-        user.name = req.body.name;
-        user.email = req.body.email;
-        user.username = req.body.username;
-        user.password = req.body.password;
+        user.role = req.body.role || user.role;
+        user.name = req.body.name ||user.name ;
+        user.email = req.body.email || user.email;
+        user.username = req.body.username || user.username;
+        user.password = req.body.password || user.password;
         console.log(user);
         user.save(function(err,user){
             res.status(200).send(user);
