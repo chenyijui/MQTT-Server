@@ -1,4 +1,5 @@
 const User = require('../module/module.user');
+const bcrypt = require('bcrypt-nodejs');
 
 exports.creat = function(req, res){
     //creat user and save user
@@ -10,7 +11,7 @@ exports.creat = function(req, res){
         name: req.body.name,
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
     });
     user.save(function(err, user){
         if(err){
