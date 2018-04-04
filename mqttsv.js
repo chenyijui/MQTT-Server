@@ -1,6 +1,7 @@
 const mosca = require('mosca');
 const mongoose = require('mongoose');
 const Message = require('./app/module/module.message');
+const authuser = require('../server/app/controller/mqttsv.controller.authuser');
 //Mongoose configurations
 mongoose.connect('mongodb://localhost:27017/mqtt');
 mongoose.Promise = global.Promise;
@@ -24,9 +25,39 @@ const moscaSettings = {
     }
 }
 var server;
+
+
 var Mqttsv = function(){
+    var a ;
     server = new mosca.Server(moscaSettings);
-    server.on('ready', setup);
+    var authenticate = function(client, username, password, callback) {
+        var authorized = authuser.Authenticate(client, username, password , callback);
+    }
+    var authorizePublish = function (client, topic, payload, callback) {
+        console.log("==========authorizePublish=============" + topic.split('/')[0]); 
+        if(client.user != topic.split('/')[0]){
+            console.log('==========authorizePublish============='+ topic.split('/')[0] + '  ' + 'can not publish');
+        }
+        callback(null, client.user == topic.split('/')[0]);
+        // set auth to :
+        //  true to allow 
+        //  false to deny and disconnect
+        //  'ignore' to puback but not publish msg.
+        // callback(null, auth);
+    }
+    
+    var authorizeSubscribe = function (client, topic, callback) {
+        var auth = true;
+        // set auth to :
+        //  true to allow
+        //  false to deny 
+        callback(null, auth);
+    }
+    server.on('ready', (setup) => {
+        server.authenticate = authenticate;
+        server.authorizePublish = authorizePublish;
+        server.authorizeSubscribe = authorizeSubscribe;
+    });
     server.on('clientConnected', (client) => {
         console.log('client connected', client.id);
     });
@@ -68,8 +99,6 @@ var Mqttsv = function(){
             console.log('message', message);
             message.save();
         }
-        
-        
     });
     // when client return puback,
     server.on('delivered', (packet, client) => {

@@ -3,27 +3,29 @@ const md5 = require('md5');
 const keys = require('../../config/key');
 
 exports.creat = function(req, res){
-    if(!req.body.deviceid&&!req.body.devicename&&!req.body.devicetype){
+    if(!req.body.devicename || !req.body.devicetype){
         res.status(500).send({message:'Deviceid can not be empty'});
+    } else {
+        var d = new Date();
+        var n = d.toISOString();
+        console.log(req.body.devicename);
+        var newDeviceId = req.body.devicename + n + 'device';
+        var deviceIdEncrypt = md5(newDeviceId);
+        var newDeviceKey = deviceIdEncrypt + keys.secret.secretkey;
+        var devicekeyEncrypt = md5(newDeviceKey);
+        var device = new Device({
+            devicename:req.body.devicename,
+            devicetype: req.body.devicetype,
+            deviceid: deviceIdEncrypt,
+            devicekey: devicekeyEncrypt,
+        })
+        device.save(function(err, device){
+            if(err){
+                res.status(500).send({message:'some error'});
+            }
+            res.status(200).send(device);
+        })
     }
-    var d = new Date();
-    var n = d.toISOString();
-    var newDeviceId = req.body.deviceid + n + 'device';
-    var deviceIdEncrypt = md5(newDeviceId);
-    var newDeviceKey = deviceIdEncrypt + keys.secret.secretkey;
-    var devicekeyEncrypt = md5(newDeviceKey);
-    var device = new Device({
-        devicename:req.body.devicename,
-        devicetype: req.body.devicetype,
-        deviceid: deviceIdEncrypt,
-        devicekey: devicekeyEncrypt,
-    })
-    device.save(function(err, device){
-        if(err){
-            res.status(500).send({message:'some error'});
-        }
-        res.status(200).send(device);
-    })
 };
 
 exports.findAll = function(req, res){

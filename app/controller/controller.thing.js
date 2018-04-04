@@ -3,35 +3,32 @@ const keys = require('../../config/key');
 const md5 = require('md5');
 
 
-
-
-
-
 //creat a new thing
 exports.creat = function(req, res){
 
-    if(!req.body.thingid&&!req.body.thingname){
+    if(!req.body.thingname){
         res.status(500).send({message:'ThingId&Thingname can not be empty'});
+    } else{
+        var d = new Date();
+        var n = d.toISOString();
+        var newThingId = req.body.thingname + n + 'thing';
+        var thingIdEncrypt = md5(newThingId);
+        var newThingKey = thingIdEncrypt + keys.secret.secretkey;
+        var thingkeyEncrypt = md5(newThingKey);
+        var thing = new Thing({
+            thingname: req.body.thingname,
+            thingid: thingIdEncrypt,
+            thingkey: thingkeyEncrypt,
+        });
+        console.log(thing);
+        thing.save(function(err, thing){
+            if(err){
+                res.status(500).send({message: 'some error'})
+            }else {
+                res.status(200).send(thing);
+            }
+        });
     }
-    var d = new Date();
-    var n = d.toISOString();
-    var newThingId = req.body.thingid + n + 'thing';
-    var thingIdEncrypt = md5(newThingId);
-    var newThingKey = thingIdEncrypt + keys.secret.secretkey;
-    var thingkeyEncrypt = md5(newThingKey);
-    var thing = new Thing({
-        thingname: req.body.thingname,
-        thingid: thingIdEncrypt,
-        thingkey: thingkeyEncrypt,
-    });
-    console.log(thing);
-    thing.save(function(err, thing){
-        if(err){
-            res.status(500).send({message: 'some error'})
-        }else {
-            res.status(200).send(thing);
-        }
-    });
 };
 
 exports.findAll = function(req ,res){
