@@ -2,14 +2,14 @@ const Thing = require("../module/module.thing");
 const Device = require("../module/module.device");
 
 //authenticate username & password
-exports.Authenticate = function(client, username, password, callback){
+exports.Authenticate = function(client, connect_username, connect_password, callback){
     var ispassed = false;
-    var thingId = username.toString().split(':')[0];
+    var thingId = connect_username.toString().split(':')[0];
     console.log('thingId:' + thingId);
-    var thingKey = password.toString().split(':')[0];
-    var deviceId = username.toString().split(':')[1];
+    var thingKey = connect_password.toString().split(':')[0];
+    var deviceId = connect_username.toString().split(':')[1];
     console.log('deviceid:' + deviceId);
-    var deviceKey = password.toString().split(':')[1];
+    var deviceKey = connect_password.toString().split(':')[1];
     Thing.findOne({'thingid':thingId,'thingkey':thingKey}, function(err, thing) {
         if(err){
             //do something
@@ -27,7 +27,7 @@ exports.Authenticate = function(client, username, password, callback){
                     if(device){ 
                         ispassed = true; 
                         console.log('authuser-------------' + ispassed);
-                        client.user = username;
+                        client.user = connect_username;
                         console.log('authuser-------------' + client.user);
                     }
                 }
