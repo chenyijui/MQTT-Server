@@ -11,14 +11,14 @@ exports.creat = function(req, res){
     } else{
         var d = new Date();
         var n = d.toISOString();
-        var newThingId = req.body.thingname + n + 'thing';
-        var thingIdEncrypt = md5(newThingId);
-        var newThingKey = thingIdEncrypt + keys.secret.secretkey;
-        var thingkeyEncrypt = md5(newThingKey);
+        var thingId = req.body.thingname + n + 'thing';
+        var thingId_Encrypt = md5(thingId);
+        var thingKey = thingId_Encrypt + keys.secret.secretkey;
+        var thingkey_Encrypt = md5(thingKey);
         var thing = new Thing({
             thingname: req.body.thingname,
-            thingid: thingIdEncrypt,
-            thingkey: thingkeyEncrypt,
+            thingid: thingId_Encrypt,
+            thingkey: thingkey_Encrypt,
         });
         console.log(thing);
         thing.save(function(err, thing){

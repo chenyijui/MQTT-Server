@@ -30,8 +30,8 @@ var server;
 var Mqttsv = function(){
     var a ;
     server = new mosca.Server(moscaSettings);
-    var authenticate = function(client, username, password, callback) {
-        var authorized = authuser.Authenticate(client, username, password , callback);
+    var authenticate = function(client, connect_username, connect_password, callback) {
+        var authorized = authuser.Authenticate(client, connect_username, connect_password , callback);
     }
     var authorizePublish = function (client, topic, payload, callback) {
         console.log("==========authorizePublish=============" + topic.split('/')[0]); 
