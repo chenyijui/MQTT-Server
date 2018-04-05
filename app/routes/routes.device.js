@@ -1,4 +1,4 @@
-module.exports = function(app){
+module.exports = function(app) {
     const devices = require('../controller/controller.device');
     //creat a new device
     app.post('/devices', devices.creat);

@@ -1,4 +1,4 @@
-module.exports = function(app){
+module.exports = function(app) {
     const things = require('../controller/controller.thing');
     //creat a thing username and password
     app.post('/things', things.creat);

@@ -27,7 +27,7 @@ const moscaSettings = {
 var server;
 
 
-var Mqttsv = function(){
+var Mqttsv = function() {
     var a ;
     server = new mosca.Server(moscaSettings);
     var authenticate = function(client, connect_username, connect_password, callback) {

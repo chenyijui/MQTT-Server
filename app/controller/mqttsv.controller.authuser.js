@@ -2,7 +2,7 @@ const Thing = require("../module/module.thing");
 const Device = require("../module/module.device");
 
 //authenticate username & password
-exports.Authenticate = function(client, connect_username, connect_password, callback){
+exports.Authenticate = function(client, connect_username, connect_password, callback) {
     var ispassed = false;
     var thingId = connect_username.toString().split(':')[0];
     console.log('thingId:' + thingId);
@@ -18,8 +18,8 @@ exports.Authenticate = function(client, connect_username, connect_password, call
             return
         }
         else {
-            Device.findOne({'deviceid':deviceId, 'devicekey':deviceKey}, function(err, device){
-                if(err){
+            Device.findOne({'deviceid':deviceId, 'devicekey':deviceKey}, function(err, device) {
+                if(err) {
                     console.log(err);
                     return
                 }else {

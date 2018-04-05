@@ -2,8 +2,8 @@ const Device = require('../module/module.device');
 const md5 = require('md5');
 const keys = require('../../config/key');
 
-exports.creat = function(req, res){
-    if(!req.body.devicename || !req.body.devicetype || !req.body.devicepw ){
+exports.creat = function(req, res) {
+    if(!req.body.devicename || !req.body.devicetype || !req.body.devicepw ) {
         res.status(500).send({message:'Deviceid can not be empty'});
     } else {
         var d = new Date();
@@ -20,8 +20,8 @@ exports.creat = function(req, res){
             deviceid: deviceId_Encrypt,
             devicekey: devicekey_Encrypt,
         })
-        device.save(function(err, device){
-            if(err){
+        device.save(function(err, device) {
+            if(err) {
                 res.status(500).send({message:'some error'});
             }
             res.status(200).send(device);
@@ -29,18 +29,18 @@ exports.creat = function(req, res){
     }
 };
 
-exports.findAll = function(req, res){
-    Device.find(function(err, device){
-        if(err){
+exports.findAll = function(req, res) {
+    Device.find(function(err, device) {
+        if(err) {
             res.status(500).send({message: 'some error'});
         }
         res.status(200).send(device);
     })
 }
 
-exports.findOne = function(req, res){
+exports.findOne = function(req, res) {
     Device.findById(req.params.deviceId, function(err, device){
-        if(err){
+        if(err) {
             res.status(500).send({message:'some error'});
         }else {
             res.status(200).send(device);
@@ -48,18 +48,18 @@ exports.findOne = function(req, res){
     })
 }
 
-exports.delete = function(req, res){
+exports.delete = function(req, res) {
     Device.remove({_id:req.params.deviceId}, function(err, device){
-        if(err){
+        if(err) {
             res.status(500).send({message: 'some error'});
         }
         res.status(200).send({message: 'success remove'});
     });
 }
 
-exports.update = function(req, res){
-    Device.findById(req.params.deviceId, function(err ,device){
-        if(err){
+exports.update = function(req, res) {
+    Device.findById(req.params.deviceId, function(err ,device) {
+        if(err) {
             res.status(500).send({message: 'some error'});
         }
         device.devicetype = req.body.devicetype || device.devicetype;
