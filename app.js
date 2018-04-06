@@ -18,8 +18,8 @@ const srv = http.createServer(app);
 // mqttsv.attachHttpServer(srv);
 
 //passport init & passport session
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //setting session
@@ -45,6 +45,7 @@ app.use(cors({
 require('./app/routes/routes.user')(app);
 require('./app/routes/routes.thing')(app);
 require('./app/routes/routes.device')(app);
+require('./app/routes/routes.authentication')(app);
 
 
 app.get('/', (req, res) => res.send({message:'hello'}))

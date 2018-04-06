@@ -1,7 +1,7 @@
 const User = require('../module/module.user');
 const bcrypt = require('bcrypt-nodejs');
-
 exports.creat = function(req, res) {
+    
     //creat user and save user
     if(!req.body.name&&!req.body.username&&!req.body.password){
         res.status(400).send({message:'Users can not be empty'});

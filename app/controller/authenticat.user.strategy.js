@@ -36,3 +36,34 @@ passport.use('login', new LocalStrategy({
         });
     }
 ));
+
+// passport logout
+passport.use('signup', new LocalStrategy({
+    passReqToCallback: true
+}, function(req, username, password, done) {
+        User.findOne({username:username},function(err, user) {
+            if(err) {
+                return done(err)
+            }
+            if(user) {
+                console.log('You have already registered.');
+                return done(null, false)
+            }else {
+                var user = new User({
+                    role: req.body.role,
+                    name: req.body.name,
+                    email: req.body.email,
+                    username: req.body.username,
+                    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null),
+                });
+                user.save(function(err, user) {
+                    console.log("user save successfully");
+                    if(err) {
+                        console.log("ERROR");
+                    }
+                    return done(null, user);
+                })
+            }
+        })
+    }
+))
