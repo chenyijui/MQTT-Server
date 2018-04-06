@@ -6,7 +6,7 @@ module.exports = function(app) {
     //find all user
     app.get('/users', authentication.authenticationMiddleware, users.findAll);
     //find one user
-    app.get('/users/:userId', users.findOne);
+    app.get('/info', authentication.authenticationMiddleware, users.findOne);
     // Update a User with useId
     app.put('/users/:userId', users.update);
     //delete user

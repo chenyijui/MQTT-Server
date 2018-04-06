@@ -34,7 +34,7 @@ exports.findAll = function(req, res) {
 
 //find a user by userId
 exports.findOne = function(req ,res) {
-    User.findById(req.params.userId, function(err, user){
+    User.findById({_id: req.session.passport.user}, function(err, user){
         if(err) {
             res.status(500).send({message: "Could not retrieve user"});
         }
