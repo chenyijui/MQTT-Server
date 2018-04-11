@@ -43,10 +43,14 @@ passport.use('signup', new LocalStrategy({
 }, function(req, username, password, done) {
         User.findOne({username:username},function(err, user) {
             if(err) {
+                console.log('======passport signup err======');
+                console.log(err);
                 return done(err)
             }
             if(user) {
                 console.log('You have already registered.');
+                console.log('======passport signup find user======');
+                console.log(user);
                 return done(null, false)
             }else {
                 var user = new User({

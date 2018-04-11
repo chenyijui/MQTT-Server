@@ -25,12 +25,12 @@ exports.creat = function(req, res) {
         })
         User.findById({_id: req.session.passport.user}, function(err, user){
             if(err) {
-                res.status(404).send({message: 'can not find user'});
+                res.status(404).send({message: 'can not find user by UserId'});
             }
             user.devices = device._id;
             user.save(function(err, user){
                 if(err) {
-                    res.status(500).send({message: 'DB error'});
+                    res.status(500).send({message: 'some error'});
                 }
                 device.save(function(err, device) {
                     if(err) {

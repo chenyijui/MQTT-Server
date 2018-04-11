@@ -26,13 +26,18 @@ module.exports = function(app) {
     //user signup
     app.post('/signup', function (req, res, next) {
         passport.authenticate('signup', function (err, user) {
+            console.log('app.post signup');
             console.log(user);
             if(err) {
                 return res.status(500).send({message: "system error"} );
             }
+            if(user == false){
+                return res.status(404).send({message: '傳送格式錯誤'});
+            }
             if(!user) {
                 return res.status(202).send({message: 'You have already registered.'});
-            }else {
+            }
+            else {
                 return res.status(200).send({message: 'signup successfully'});
             }
         })(req, res, next)
