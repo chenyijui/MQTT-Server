@@ -27,7 +27,7 @@
                         <label>
                             <input type="checkbox" value="remember-me"> Remember me
                         </label>
-                        <a href=''>Signout</a>
+                        <a id="text-signup" data-toggle="modal" data-target="#modal-signup" href="" >Sign up</a>
                     </div>
 
                     <!-- <div class="row mb-3"> -->
@@ -39,9 +39,49 @@
             </div>
         </div>
     </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    
+	<!-- Modal : user sign up-->
+	<div class="modal fade" id="modal-signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                            <label for="signupUserUsername" class="col-2 col-form-label">Username</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="signupUserUsername">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="signupUserName" class="col-2 col-form-label">Name</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="signupUserName">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="signupUserEmail" class="col-2 col-form-label">Email</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="signupUserEmail">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="signupUserPassword" class="col-2 col-form-label">Password</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="signupUserPassword">
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id='btn-signupUser' class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/index.js"></script>  
     <script src="./js/login.js"></script>
 </body>
 

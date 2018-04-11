@@ -1,5 +1,5 @@
 var login = (function () {
-    $('#btn-login').on('click', _handleLogin);
+	$('#btn-login').on('click', _handleLogin);
     function _handleLogin() {
         var username = $('#username').val();
         var password = $('#password').val();
