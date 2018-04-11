@@ -8,6 +8,7 @@ exports.creat = function(req, res) {
     if(!req.body.devicename || !req.body.devicetype || !req.body.devicepw ) {
         res.status(500).send({message:'Deviceid can not be empty'});
     } else {
+        var stateflg = 0;
         var d = new Date();
         var n = d.toISOString();
         console.log(req.body.devicename);
@@ -22,6 +23,7 @@ exports.creat = function(req, res) {
             devicetype: req.body.devicetype,
             deviceid: deviceId_Encrypt,
             devicekey: devicekey_Encrypt,
+            stateflg: req.body.stateflg ||stateflg,
         })
         User.findById({_id: req.session.passport.user}, function(err, user){
             if(err) {

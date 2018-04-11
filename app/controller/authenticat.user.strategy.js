@@ -52,9 +52,13 @@ passport.use('signup', new LocalStrategy({
                 console.log('======passport signup find user======');
                 console.log(user);
                 return done(null, false)
-            }else {
+            }
+            if(!req.body.name || !req.body.email || !req.body.username || !req.body.password) {
+                return done(null, false)                                
+            } else {
+                var role = 'user';
                 var user = new User({
-                    role: req.body.role,
+                    role: req.body.role || role,
                     name: req.body.name,
                     email: req.body.email,
                     username: req.body.username,
@@ -67,7 +71,7 @@ passport.use('signup', new LocalStrategy({
                     }
                     return done(null, user);
                 })
-            }
+            }    
         })
     }
 ))

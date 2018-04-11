@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 var thingschema = new mongoose.Schema({
     thingname:String,
+    thingtype:String,
     thingid: String,
     thingkey: String,
 },{timestamps:true, usePushEach:true});

@@ -6,8 +6,7 @@ const User = require('../module/module.user');
 
 //creat a new thing
 exports.creat = function(req, res) {
-    
-    if(!req.body.thingname) {
+    if(!req.body.thingname || !req.body.thingtype) {
         res.status(500).send({message:'ThingId&Thingname can not be empty'});
     } else {
         var d = new Date();
@@ -19,6 +18,7 @@ exports.creat = function(req, res) {
         var thing = new Thing({
             _id: new mongoose.Types.ObjectId(),
             thingname: req.body.thingname,
+            thingtype:req.body.thingtype,
             thingid: thingId_Encrypt,
             thingkey: thingkey_Encrypt,
         });
