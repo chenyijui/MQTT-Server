@@ -11,18 +11,4 @@ module.exports = function(app) {
     app.put('/info', authentication.authenticationMiddleware, users.update);
     //delete user
     app.delete('/users/:userId', users.delete);
-    //user logout
-    app.get('/signout',(req, res, ) => {
-        //handle with passport
-        req.logout();
-        console.log('=======/signout=====')
-        console.log(req.session);
-        if(req.session){
-            req.session = null;
-        } else {
-            // req.session.destroy();
-            res.send({message: "can not logout"});
-        }
-        res.send({message: "success logout"});
-    });
 };

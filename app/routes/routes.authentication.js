@@ -9,7 +9,7 @@ module.exports = function(app) {
             return res.status(500).send({message: "system error"} );
             }
             if(!user) {
-                return res.status(500).send({message: "username or password error"});
+                return res.status(404).send({message: "username or password error"});
             }
             req.login(user, function (err) {
                 if (err) {
@@ -31,9 +31,9 @@ module.exports = function(app) {
                 return res.status(500).send({message: "system error"} );
             }
             if(!user) {
-                return res.status(300).send({message: 'You have already registered.'});
+                return res.status(202).send({message: 'You have already registered.'});
             }else {
-                return res.status(300).send({message: 'signup successfully'});
+                return res.status(200).send({message: 'signup successfully'});
             }
         })(req, res, next)
     });
@@ -41,6 +41,13 @@ module.exports = function(app) {
     app.get('/logout',(req, res) => {
         //handle with passport
         req.logout();
-        res.send( {message: "success logout"} );
+        console.log('=======/signout=====')
+        console.log(req.session);
+        if(req.session){
+            req.session = null;
+        } else {
+            res.send({message: "can not logout"});
+        }
+        res.send({message: "success logout"});
     });
 }
