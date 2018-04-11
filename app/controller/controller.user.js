@@ -43,16 +43,16 @@ exports.findOne = function(req ,res) {
 };
 //update user data
 exports.update = function (req ,res) {
-    User.findById(req.params.userId, function(err ,user){
+    User.findById({_id: req.session.passport.user}, function(err ,user){
         if(err) {
-            res.status(500).send({message: "some error"});
+            res.status(403).send({message: "please login"});
         }
         user.role = req.body.role || user.role;
         user.name = req.body.name ||user.name ;
         user.email = req.body.email || user.email;
         user.username = req.body.username || user.username;
-        user.password = req.body.password || user.password;
-        console.log(user);
+        user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null) || user.password;
+        console.log('update : ' + user);
         user.save(function(err,user){
             res.status(200).send(user);
         });

@@ -9,7 +9,7 @@ var userschema = new mongoose.Schema ({
     things:[{
         type: mongoose.Schema.Types.ObjectId, ref: 'Thing'
     }],
-    device:[{
+    devices:[{
         type: mongoose.Schema.Types.ObjectId, ref: 'Device'
     }]
 },{timestamps:true, usePushEach:true});

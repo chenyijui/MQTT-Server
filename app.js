@@ -35,12 +35,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
+app.use(express.static('../web'));
 app.use(cors({
 	methods: ['GET', 'POST', 'PATCH','DELETE', 'PUT'],
 	credentials: true,
 	origin: true
 }));
+
 // Require User routes
 require('./app/routes/routes.user')(app);
 require('./app/routes/routes.thing')(app);
@@ -48,7 +49,7 @@ require('./app/routes/routes.device')(app);
 require('./app/routes/routes.authentication')(app);
 
 
-app.get('/', (req, res) => res.send({message:'hello'}))
+
 
 app.listen(3000, function(){
     console.log("httpserver running with 3000 port");

@@ -1,8 +1,9 @@
 module.exports = function(app) {
     const things = require('../controller/controller.thing');
+    const authentication = require('../controller/authenticationMiddleware');
     //creat a thing username and password
-    app.post('/things', things.creat);
-    //find all thing with thingId
+    app.post('/things', authentication.authenticationMiddleware, things.creat);
+    //find all things
     app.get('/things', things.findAll);
     //find one thing with thingId
     app.get('/things/:thingId', things.findOne);
@@ -10,4 +11,6 @@ module.exports = function(app) {
     app.delete('/things/:thingId', things.delete);
     //update thing
     app.put('/things/:thingId', things.update);
+    //find all things with userId
+    app.get('/info/things', authentication.authenticationMiddleware, things.findUserAllThing);
 }

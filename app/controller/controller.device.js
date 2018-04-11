@@ -1,4 +1,6 @@
 const Device = require('../module/module.device');
+const User = require('../module/module.user');
+const mongoose = require('mongoose');
 const md5 = require('md5');
 const keys = require('../../config/key');
 
@@ -9,22 +11,34 @@ exports.creat = function(req, res) {
         var d = new Date();
         var n = d.toISOString();
         console.log(req.body.devicename);
-        var deviceId = req.body.devicename + req.body.devicetype +req.body.devicepw+ n + 'device';
+        var deviceId = req.session.passport.user + req.body.devicetype +req.body.devicepw+ n + 'device';
         var deviceId_Encrypt = md5(deviceId);
         var devicekey = deviceId_Encrypt + keys.secret.secretkey;
         var devicekey_Encrypt = md5(devicekey);
         var device = new Device({
+            _id: new mongoose.Types.ObjectId(),
             devicename:req.body.devicename,
             devicepw:  md5(req.body.devicepw),
             devicetype: req.body.devicetype,
             deviceid: deviceId_Encrypt,
             devicekey: devicekey_Encrypt,
         })
-        device.save(function(err, device) {
+        User.findById({_id: req.session.passport.user}, function(err, user){
             if(err) {
-                res.status(500).send({message:'some error'});
+                res.status(404).send({message: 'can not find user'});
             }
-            res.status(200).send(device);
+            user.devices = device._id;
+            user.save(function(err, user){
+                if(err) {
+                    res.status(500).send({message: 'DB error'});
+                }
+                device.save(function(err, device) {
+                    if(err) {
+                        res.status(500).send({message:'some error'});
+                    }
+                    res.status(200).send(device);
+                })
+            }) 
         })
     }
 };
@@ -35,6 +49,22 @@ exports.findAll = function(req, res) {
             res.status(500).send({message: 'some error'});
         }
         res.status(200).send(device);
+    })
+}
+
+exports.findUserAllDevice = function(req, res) {
+    User.findById({_id: req.session.passport.user})
+    .populate('devices')
+    .exec(function(err, user){
+        if(err) {
+            console.log(user);
+            res.status(500).send({message: 'some error'});
+            if(user === undefined ) {
+                res.status(404).send({message: 'can not find user devices'});
+            }
+        }
+        console.log(user.devices);
+        res.status(200).send(user.devices);
     })
 }
 
