@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MQTT boroker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/index.css">
+  <script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://rawgit.com/Nodws/bootstrap4-tagsinput/master/tagsinput.js"></script> -->
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role="navigation">
+		<a class="navbar-brand" href="">MQTT </a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<!-- <li class="nav-item"><button id="" type="button" class="btn btn-secondary forLogin hide" data-toggle="modal" data-target="#modal-userInfo">
+						Info
+					</button></li> -->
+			</ul>
+			<ul class="navbar-nav flex-row mr-lg-0 forSignin hide ">
+				<li class="nav-item dropdown glyphicon glyphicon-home">
+					<a class="nav-link dropdown-toggle mr-3 mr-lg-0" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i><span class="caret"></span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item " id="dropdown-info" data-toggle="modal" data-target="#modal-userInfo">Info</a>
+						<a class="dropdown-item" id="dropdown-signout" >Logout</a>
+					</div>
+				</li>
+			</ul>
+				<a href="/login.html" class="btn btn-outline-secondary mr-1 my-2 my-sm-0 forNoSignin hide">Login</a>	
+		</div>
+	</nav>
+	<div class="container pt-5">
+			<div class="row mb-3 pt-3">
+					<div class="col-8 ">
+						<!-- Button trigger modal -->
+						<button  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-userInfo">
+							creat thing
+						</button>
+						<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModal">
+							creat device
+						</button>
+					</div>
+			</div>
+			<div id="post">
+					<!-- <div class="row">
+						<div class="col-8 offset-2">
+							<div class="card post">
+								<div class="card-block">
+									<h4 class="card-title title">Card title</h4>
+									<h6 class="card-subtitle mb-2 text-muted author">author</h6>
+									<h6 class="card-subtitle mb-2 text-muted time">time</h6>
+									<span class="badge badge-default">Default</span>
+									<p class="card-text abstract">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									<a class="btn-more" data-id="" href="javascriptl:;" class="card-link">Read more...</a>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+				<div class="row">
+				<!-- card:MyThing MyDevice  -->
+				<div class="card text-center  pt2">
+					<div class="card-header">
+						<ul class="nav nav-tabs card-header-tabs">
+							<li class="nav-item">
+								<a class="nav-link active" href="#">MyThing</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">MyDevice</a>
+							</li>
+						</ul>
+					</div>
+					<div class="card-body ">
+						<div class="row pt-1 m-2">
+							<div class="col-sm-6 pt-1">
+								<div class="card" >
+									<div class="card-body">
+										<h5 class="card-title">Special title treatment</h5>
+										<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+										<a href="#" class="btn btn-primary">Go somewhere</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 pt-1">
+								<div class="card" >
+									<div class="card-body">
+										<h5 class="card-title">Special title treatment</h5>
+										<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+										<a href="#" class="btn btn-primary">Go somewhere</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 pt-1">
+									<div class="card" >
+										<div class="card-body">
+											<h5 class="card-title">Special title treatment</h5>
+											<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+											<a href="#" class="btn btn-primary">Go somewhere</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6 pt-1">
+								<div class="card" >
+									<div class="card-body">
+										<h5 class="card-title">Special title treatment</h5>
+										<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+										<a href="#" class="btn btn-primary">Go somewhere</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>		
+	</div>
+	
+	<!-- Modal : user info-->
+	<div class="modal fade" id="modal-userInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Info</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		<div class="modal-body">
+			<div class="form-group row">
+					<label class="col-2 col-form-label">Username</label>
+					<div class="col-10">
+						<input class="form-control" type="text" id="updateUserUsername" disabled>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="updateUserName" class="col-2 col-form-label">Name</label>
+					<div class="col-10">
+						<input type="text" class="form-control" id="updateUserName">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="updateUserEmail" class="col-2 col-form-label">Email</label>
+					<div class="col-10">
+						<input type="text" class="form-control" id="updateUserEmail">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="updateUserPassword" class="col-2 col-form-label">New password</label>
+					<div class="col-10">
+						<input type="text" class="form-control" id="updateUserPassword">
+					</div>
+				</div>
+		</div>
+			<div class="modal-footer">
+				<button type="button" id='btn-updateUserInfo' class="btn btn-primary">Update</button>
+			</div>
+		</div>
+	</div>
+	</div>
+		
+		
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="./js/index.js"></script>
+</body>
+
+</html>

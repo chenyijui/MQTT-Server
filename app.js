@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-app.use(express.static('../web'));
+app.use(express.static('../server/web'));
 app.use(cors({
 	methods: ['GET', 'POST', 'PATCH','DELETE', 'PUT'],
 	credentials: true,

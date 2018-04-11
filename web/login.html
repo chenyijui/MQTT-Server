@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MQTT boroker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container pt-5">
+        <div class="row mb-3">
+            <div class="col-lg-6 offset-lg-2">
+                <form class="form-signin pt-5">
+                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                    <label for="username" class="col-3 col-form-label">User name</label>
+					<input class="form-control" type="text" id="username">
+                    <label for="password" class="col-3 col-form-label">Password</label>
+                    <input class="form-control" type="password" id="password">
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                        <a href=''>Signout</a>
+                    </div>
+
+                    <!-- <div class="row mb-3"> -->
+                        <div class="col-lg-12"><button id="btn-login" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button></div>
+                        <!-- <div class="col-lg-6"><button class="btn btn-lg btn-primary btn-block" type="submit">Sign out</button></div> -->
+                    <!-- </div> -->
+                <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+                </form>
+            </div>
+        </div>
+    </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="./js/login.js"></script>
+</body>
+
+</html>
