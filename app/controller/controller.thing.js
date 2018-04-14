@@ -86,11 +86,18 @@ exports.findOne = function(req, res) {
 exports.update = function(req, res) {
     Thing.findById(req.params.thingId, function(err ,thing){
         if(err) {
-            res.status(500).send({message:'some error'});
-        }else {
-            console.log(req.body.thingid);
-            thing.thingid = req.body.thingid;
-            thing.thingkey = req.body.thingkey ||thing.thingkey;
+            res.status(403).send({message:'some error'});
+        } else {
+            var d = new Date();
+            var n = d.toISOString();
+            var thingId = req.session.passport.user + n + 'thing';
+            var thingId_Encrypt = md5(thingId);
+            var thingKey = thingId_Encrypt + keys.secret.secretkey;
+            var thingkey_Encrypt = md5(thingKey);
+            thing.thingname = req.body.thingname;
+            thing.thingtype =req.body.thingtype;            
+            thing.thingid = thingId_Encrypt;
+            thing.thingkey = thingkey_Encrypt;
             console.log(thing);
             thing.save(function(err, thing){
                 res.status(200).send(thing);

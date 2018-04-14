@@ -94,6 +94,7 @@ exports.findOne = function(req, res) {
 exports.delete = function(req, res) {
     Device.remove({_id:req.params.deviceId}, function(err, device){
         if(err) {
+            console.log(err);
             res.status(500).send({message: 'some error'});
         }
         res.status(200).send({message: 'success remove'});
@@ -103,13 +104,22 @@ exports.delete = function(req, res) {
 exports.update = function(req, res) {
     Device.findById(req.params.deviceId, function(err ,device) {
         if(err) {
-            res.status(500).send({message: 'some error'});
-        }
-        device.devicetype = req.body.devicetype || device.devicetype;
-        device.deviceid = req.body.deviceid || device.deviceid;
-        device.devicekey = req.body.devicekey || device.devicekey;
-        device.save(function(err, deviceId){
-            res.status(200).send(device);
-        });
+            res.status(403).send({message: 'some error'});
+        } else {
+            var d = new Date();
+            var n = d.toISOString();
+            var deviceId = req.session.passport.user + req.body.devicetype +req.body.devicepw+ n + 'device';
+            var deviceId_Encrypt = md5(deviceId);
+            var devicekey = deviceId_Encrypt + keys.secret.secretkey;
+            var devicekey_Encrypt = md5(devicekey);
+            device.devicename = req.body.devicename;
+            device.devicetype = req.body.devicetype;
+            device.deviceid = deviceId_Encrypt; 
+            device.devicekey = devicekey_Encrypt;
+            console.log(device);
+            device.save(function(err, deviceId){
+                res.status(200).send(device);
+            });
+        } 
     });
 }

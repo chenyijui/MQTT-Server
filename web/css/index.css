@@ -3,9 +3,15 @@
 .hide {
 	display: none;
 }
+
 .mything:hover {
 	box-shadow: 0 1px 2px 0 #000;
 }
+
+.mydevice:hover {
+	box-shadow: 0 1px 2px 0 #000;
+}
+
 .titleleft {
 	text-align: left;
 }
@@ -13,19 +19,37 @@
 
 .mything .btn-delthing {
 	position: absolute;
-	/* display:none;  */
+	display:none; 
 }
 .mything .btn-editthing {
 	position: absolute;
 	font-size: 14px;
-	/* display:none;  */
+	display:none; 
 }
 
+.mydevice .btn-deldevice {
+	position: absolute;
+	display:none; 
+}
+
+.mydevice .btn-editdevice {
+	position: absolute;
+	font-size: 14px;
+	display:none; 
+}
 
 .mything:hover .btn-delthing {
 	display: initial;
 }
 
 .mything:hover .btn-editthing {
+	display: initial;
+}
+
+.mydevice:hover .btn-deldevice {
+	display: initial;
+}
+
+.mydevice:hover .btn-editdevice {
 	display: initial;
 }
