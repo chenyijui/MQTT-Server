@@ -10,8 +10,9 @@ var index = (function () {
     $('#dropdown-info').on('click', _handelOpenUserModal);
     $('#btn-updateUserInfo').on('click', _handelUpdateUserInfo);
     $('#dropdown-logout').on('click', _handelLogout);
-    $('#btn-signupUser').on('click', _hendelCreatSignout)
-
+    $('#btn-creatDevice').on('click', _hendeCreatDevice);
+    $('#btn-creatThing').on('click', _hendecreatThing);
+    $('#card-thing-content').on('click.delthing', '.btn-delthing', _hendeDeleteCardThing);
 
 
 
@@ -55,6 +56,7 @@ var index = (function () {
         _userInfo = data;
         console.log(_userInfo );
         if(_userInfo._id) {
+            _renderThingCard ();   
             $('.forSignin').removeClass('hide');
 		    $('.forNoSignin').addClass('hide');
         } else {
@@ -73,12 +75,54 @@ var index = (function () {
 				url: 'http://127.0.0.1:3000/info',
 				type: 'get',
 				dataType: 'json',
-				contentType: 'application/json',
 				xhrFields: {
 					withCredentials: true
 				}
 			})
 		);
+    }
+    function _renderThingCard () {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/info/things',
+            type: 'get',
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (data) {
+                console.log('===================');
+                console.log(data);
+                $('#randermything').html('');
+                for (let cardthing of data) {
+                    $('#randermything').prepend(`
+                    <div class="col-sm-6 col-lg-6 col-md-6 pt-1">
+                        <div class="card mything" >
+                            <div class="card-body">												
+                                <h2 class="card-title mb-1 titleleft ">Name: 
+                                    <span>${cardthing.thingname}</span>
+                                    <button type="button" class="close mr-2" >
+                                        ${_userInfo ? `<span data-thingname="${cardthing.thingname}" data-thingid="${cardthing._id}" class="btn-delthing" aria-hidden="true">&times;</span>` : '' }
+                                    </button>
+                                </h2>													
+                                <h5 class="card-subtitle mb-2 text-muted titleleft">thingtype: 
+                                    <span>${cardthing.thingtype}</span>
+                                    <button type="button" class="close mr-2">
+                                        ${_userInfo ? `<span data-thingid="${cardthing._id}" class="fa fa-pencil btn-editthing ml-0.5" ></span>` : ''}
+                                        <span class="fa fa-pencil btn-editthing ml-0.5" ></span>
+                                    </button>
+                                </h5>
+                                <p class="card-text mb-0 titleleft">ThingId: <span>${cardthing.thingid}</span></p>
+                                <p class="card-text  titleleft">ThingKey: <span>${cardthing.thingkey}</span></p>											
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                } 
+            },
+            error: function(jqXHR) {
+                console.log(jqXHR);
+            }
+        })
     }
     function _handelOpenUserModal() {
 		if (_userInfo._id) {
@@ -90,39 +134,95 @@ var index = (function () {
 			alert('Login first');
 		}
     }
-    function _hendelCreatSignout () {
-        var username = $('#signupUserUsername').val();
-        var name = $('#signupUserName').val();
-        var email = $('#signupUserEmail').val();
-        var password = $('#signupUserPassword').val();
-        var role = 'user';
+    function _hendeDeleteCardThing () {
+        if(confirm(`Delete this [Thingname ${$(this).data('thingname')} ]?`)) {
+            var thingid = $(this).data('thingid');
+            $.ajax({
+                url: `http://127.0.0.1:3000/things/${thingid}`,
+                type: 'delete',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    console.log(data);
+                    _renderThingCard();
+                },
+                error: function () {
+                    console.log(jqXHR);
+                    if (jqXHR.status == 401) {
+                        alert('no login');
+                    }
+                }
+            })
+        }
+    }
+    function _hendeCreatDevice() {
+        var devicename = $('#creatDeviceDevicename').val();
+        var devicetype = $('#creatDeviceDevicetype').val();
+        var devicepw = $('#creatDeviceDevicepw').val();
+        console.log(devicename);
+        console.log(devicetype);
         $.ajax({
-            url: 'http://127.0.0.1:3000/signup', 
-			type: 'post', 
-			dataType: 'json',
-			contentType: 'application/json',
-			xhrFields: {
+            url:'http://127.0.0.1:3000/devices',
+            type:'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            xhrFields: {
 				withCredentials: true
 			},
-			data: JSON.stringify({
-				username,
-				name,
-                email,
-                password,
-                role
+            data: JSON.stringify({
+                devicename,
+                devicetype,
+                devicepw
             }),
             success: function(data) {
+                $('#modal-creatdevice').modal('hide');
+                var devicename = $('#creatDeviceDevicename').val('');
+                var devicetype = $('#creatDeviceDevicetype').val('');
+                var devicepw = $('#creatDeviceDevicepw').val('');
                 console.log(data);
-                $('#modal-signup').modal('hide');
-                alert('success');
             },
             error: function (jqXHR) {
-				console.log(jqXHR);
-				if (jqXHR.status == 401) {
-					alert('Login first');
-				}
-			}
+                console.log(jqXHR);
+                console.log();
+				if (jqXHR.status == 404) {
+					alert(jqXHR.responseJSON.message);
+                }
+            }
         })
+    }
+    function _hendecreatThing () {
+        var thingname = $("#creatThingThingname").val();
+        var thingtype = $('#creatThingThingtype').val();
+        $.ajax({
+            url: 'http://127.0.0.1:3000/things',
+            type: 'post',
+            dataType:'json',
+            contentType: 'application/json',
+            xhrFields: {
+				withCredentials: true
+            },
+            data: JSON.stringify({
+                thingname,
+                thingtype
+            }),
+            success: function (data) {
+                $('#modal-creatthing').modal('hide');
+                var thingname = $("#creatThingThingname").val('');
+                var thingtype = $('#creatThingThingtype').val('');
+                _renderThingCard ();
+                console.log(data);
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR);
+                console.log();
+				if (jqXHR.status == 404) {
+					alert(jqXHR.responseJSON.message);
+                }
+            }
+        })
+
     }
     function _handelUpdateUserInfo () {
         var updateUserInfo = _userInfo;
@@ -159,19 +259,22 @@ var index = (function () {
             url:'http://127.0.0.1:3000/logout',
             type: 'get',
             dataType:'josn',
-            contentType: 'application/json',
             xhrFields: {
                 withCredentials: true
             }
         })
         .done(function(data){
             console.log(data);
+            location.href = '/';
+            console.log('error');
         })
         .fail(function(data){
             console.log(data);
-            console.log('error');
             location.href = '/';
             alert("Success signout");
+            
+            
+            
         })
     }
 })();

@@ -27,7 +27,9 @@ exports.creat = function(req, res) {
             if(err) {
                 res.status(404).send({message:'can not find user by UserId'});
             }
-            user.things =thing._id;
+            if(user.things.indexOf(thing._id)==-1) {
+                user.things.push(thing._id);   
+            }
             thing.save(function(err, thing){
                 if(err) {
                     res.status(500).send({message: 'some error'})

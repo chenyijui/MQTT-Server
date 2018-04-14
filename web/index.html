@@ -6,7 +6,6 @@
   <title>MQTT boroker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/index.css">
   <script
 	src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -14,6 +13,7 @@
 	crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<script src="https://rawgit.com/Nodws/bootstrap4-tagsinput/master/tagsinput.js"></script> -->
 </head>
@@ -28,6 +28,12 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" >Thing</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" >Device</a>
+				</li>
 				<!-- <li class="nav-item"><button id="" type="button" class="btn btn-secondary forLogin hide" data-toggle="modal" data-target="#modal-userInfo">
 						Info
 					</button></li> -->
@@ -52,77 +58,133 @@
 					<button  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-creatthing">
 						creat thing
 					</button>
-					<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModal">
+					<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-creatdevice">
 						creat device
 					</button>
 				</div>
 		</div>
 		<div id="post">
-				<!-- <div class="row">
-					<div class="col-8 offset-2">
-						<div class="card post">
-							<div class="card-block">
-								<h4 class="card-title title">Card title</h4>
-								<h6 class="card-subtitle mb-2 text-muted author">author</h6>
-								<h6 class="card-subtitle mb-2 text-muted time">time</h6>
-								<span class="badge badge-default">Default</span>
-								<p class="card-text abstract">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								<a class="btn-more" data-id="" href="javascriptl:;" class="card-link">Read more...</a>
-							</div>
+			<!-- <div class="row">
+				<div class="col-8 offset-2">
+					<div class="card post">
+						<div class="card-block">
+							<h4 class="card-title title">Card title</h4>
+							<h6 class="card-subtitle mb-2 text-muted author">author</h6>
+							<h6 class="card-subtitle mb-2 text-muted time">time</h6>
+							<span class="badge badge-default">Default</span>
+							<p class="card-text abstract">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							<a class="btn-more" data-id="" href="javascriptl:;" class="card-link">Read more...</a>
 						</div>
 					</div>
-				</div> -->
-			</div>
-			<div class="row">
-			<!-- card:MyThing MyDevice  -->
-			<div class="card text-center  pt2">
-				<div class="card-header">
-					<ul class="nav nav-tabs card-header-tabs">
-						<li class="nav-item">
-							<a class="nav-link active" href="#">MyThing</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">MyDevice</a>
-						</li>
-					</ul>
 				</div>
-				<div class="card-body ">
-					<div class="row pt-1 m-2">
-						<div class="col-sm-6 pt-1">
-							<div class="card" >
-								<div class="card-body">
-									<h5 class="card-title">Special title treatment</h5>
-									<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
+			</div> -->
+		</div>
+
+
+
+
+		<!-- card:MyThing MyDevice  -->
+		<div class="card text-center pt2 ">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="card-header">
+						<ul class="nav nav-tabs card-header-tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" role="tab" aria-controls="mything" aria-selected="true" href="#mything">MyThing</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" role="tab" aria-controls="mydevice" aria-selected="false" href="#mydevice">MyDevice</a>
+							</li>
+						</ul>
+					</div>
+					<div class="card-body ">
+						<div class="tab-content" id="card-thing-content">
+							<div class="tab-pane fade show active" id="mything" role="tabpanel" aria-labelledby="mything-tab">
+								<div id="randermything" class="row pt-1 m-2">
+									<!-- One crad:Thing -->
+									<!-- <div class="col-sm-6 col-lg-6 col-md-6 pt-1">
+										<div class="card mything" >
+											<div class="card-body">												
+												<h2 class="card-title mb-1 titleleft ">Name: 
+													<span>123</span>
+													<button type="button" class="close mr-2" >
+														<span class="btn-delthing" aria-hidden="true">&times;</span>
+													</button>
+												</h2>													
+												<h5 class="card-subtitle mb-2 text-muted titleleft">thingtype: 
+													<span>123</span>
+													<button type="button" class="close mr-2">
+														<span class="fa fa-pencil btn-editthing ml-0.5" ></span>
+													</button>
+												</h5>
+												<p class="card-text mb-0 titleleft">ThingId: <span>123</span></p>
+												<p class="card-text  titleleft">ThingKey: <span>123</span></p>											
+											</div>
+										</div>
+									</div> -->
+									<!-- One crad:Thing -->
+									<!-- <div class="col-sm-6 col-lg-6 col-md-6 pt-1">
+										<div class="card mything" >
+											<div class="card-body">												
+												<h2 class="card-title mb-1 titleleft ">Name: 
+													<span>123</span>
+													<button type="button" class="close mr-2" >
+														<span class="btn-delthing" aria-hidden="true">&times;</span>
+													</button>
+												</h2>													
+												<h5 class="card-subtitle mb-2 text-muted titleleft">thingtype: 
+													<span>123</span>
+													<button type="button" class="close mr-2">
+														<span class="fa fa-pencil btn-editthing ml-0.5" ></span>
+													</button>
+												</h5>
+												<p class="card-text mb-0 titleleft">ThingId: <span>123</span></p>
+												<p class="card-text  titleleft">ThingKey: <span>123</span></p>											
+											</div>
+										</div>
+									</div> -->
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-6 pt-1">
-							<div class="card" >
-								<div class="card-body">
-									<h5 class="card-title">Special title treatment</h5>
-									<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 pt-1">
-								<div class="card" >
-									<div class="card-body">
-										<h5 class="card-title">Special title treatment</h5>
-										<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-										<a href="#" class="btn btn-primary">Go somewhere</a>
+							<div class="tab-pane fade" id="mydevice" role="tabpanel" aria-labelledby="mydevice-tab">
+								<div class="row pt-1 m-2">
+									<div class="col-sm-6 pt-1">
+										<div class="card" >
+											<div class="card-body">
+												<h5 class="card-title">Special title treatment</h5>
+												<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+												<a href="#" class="btn btn-primary">Go somewhere</a>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 pt-1">
-							<div class="card" >
-								<div class="card-body">
-									<h5 class="card-title">Special title treatment</h5>
-									<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
-								</div>
-							</div>
+									<div class="col-sm-6 pt-1">
+										<div class="card" >
+											<div class="card-body">
+												<h5 class="card-title">Special title treatment</h5>
+												<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+												<a href="#" class="btn btn-primary">Go somewhere</a>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6 pt-1">
+										<div class="card" >
+											<div class="card-body">
+												<h5 class="card-title">Special title treatment</h5>
+												<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+												<a href="#" class="btn btn-primary">Go somewhere</a>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6 pt-1">
+										<div class="card" >
+											<div class="card-body">
+												<h5 class="card-title">Special title treatment</h5>
+												<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+												<a href="#" class="btn btn-primary">Go somewhere</a>
+											</div>
+										</div>
+									</div>
+								</div>	
+							</div>				
 						</div>
 					</div>
 				</div>
@@ -185,13 +247,13 @@
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="creatThingThingname" class="col-2 col-form-label">Thingname</label>
-						<div class="col-10">
+						<div class="col-8 offset-1">
 							<input class="form-control" type="text" id="creatThingThingname">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="creatThingThingtype" class="col-2 col-form-label">Thingtype</label>
-						<div class="col-10">
+						<div class="col-8 offset-1">
 							<input type="text" class="form-control" id="creatThingThingtype">
 						</div>
 					</div>
@@ -202,7 +264,47 @@
 			</div>
 		</div>
 	</div>
-
+	<!-- Modal : creat device-->
+	<div class="modal fade" id="modal-creatdevice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Creat New Device</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="creatDeviceDevicename" class="col-2 col-form-label">Devicename</label>
+						<div class="col-8 offset-1" >
+							<input class="form-control" type="text" id="creatDeviceDevicename">
+						</div>
+					</div>
+					<div class="form-group row">
+							<label for="creatDeviceDevicepw" class="col-2 col-form-label">Devicepw</label>
+							<div class="col-8 offset-1" >
+								<input class="form-control" type="text" id="creatDeviceDevicepw">
+							</div>
+						</div>
+					<div class="form-group row">
+						<label for="creatDeviceDevicetype" class="col-2 col-form-label">Devicetype</label>
+						<div class="col-8 offset-1">
+							<select class="form-control" id="creatDeviceDevicetype">
+								<option value="Arduino">Arduino</option>
+								<option value="RaspberryPi">Raspberry Pi</option>
+								<option value="Others">Others</option>
+							</select> 
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id='btn-creatDevice' class="btn btn-primary">creat</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 		
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

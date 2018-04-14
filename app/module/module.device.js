@@ -6,7 +6,7 @@ var devieschema = new mongoose.Schema({
     deviceid: String,
     devicepw: String,
     devicekey: String,
-    stateflg:Number,
+    stateflag:Number,
 },{timestamps:true, usePushEach:true});
 
 const Device = mongoose.model('Device', devieschema); 

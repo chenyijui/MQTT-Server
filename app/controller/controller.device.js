@@ -6,9 +6,9 @@ const keys = require('../../config/key');
 
 exports.creat = function(req, res) {
     if(!req.body.devicename || !req.body.devicetype || !req.body.devicepw ) {
-        res.status(500).send({message:'Deviceid can not be empty'});
+        res.status(404).send({message:'Deviceid can not be empty'});
     } else {
-        var stateflg = 0;
+        var stateflag = 0;
         var d = new Date();
         var n = d.toISOString();
         console.log(req.body.devicename);
@@ -23,22 +23,26 @@ exports.creat = function(req, res) {
             devicetype: req.body.devicetype,
             deviceid: deviceId_Encrypt,
             devicekey: devicekey_Encrypt,
-            stateflg: req.body.stateflg ||stateflg,
+            stateflag: req.body.stateflag || stateflag,
         })
         User.findById({_id: req.session.passport.user}, function(err, user){
             if(err) {
                 res.status(404).send({message: 'can not find user by UserId'});
             }
-            user.devices = device._id;
+            if(user.devices.indexOf(device._id) == -1) {
+                console.log('push device in user.devices');
+                user.devices.push(device._id);
+            }
             user.save(function(err, user){
                 if(err) {
                     res.status(500).send({message: 'some error'});
-                }
+                } 
                 device.save(function(err, device) {
                     if(err) {
                         res.status(500).send({message:'some error'});
+                    } else {
+                        res.status(200).send(device);
                     }
-                    res.status(200).send(device);
                 })
             }) 
         })
@@ -55,8 +59,15 @@ exports.findAll = function(req, res) {
 }
 
 exports.findUserAllDevice = function(req, res) {
-    User.findById({_id: req.session.passport.user})
-    .populate('devices')
+    User.findById({
+        _id: req.session.passport.user
+    })
+    .populate({
+        path: 'devices',
+        match: {
+            stateflag: 1
+        }
+    })
     .exec(function(err, user){
         if(err) {
             console.log(user);
