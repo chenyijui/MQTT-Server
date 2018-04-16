@@ -8,6 +8,8 @@ var index = (function () {
     //userInfo
     var _userInfo = null;
     $('#dropdown-info').on('click', _handelOpenUserModal);
+    $('#nav-mydevice').on('click', _renderDeviceCard);
+    $('#nav-mything').on('click', _renderThingCard);
     $('#btn-updateUserInfo').on('click', _handelUpdateUserInfo);
     $('#dropdown-logout').on('click', _handelLogout);
     $('#btn-creatDevice').on('click', _hendelCreatDevice);
@@ -18,43 +20,10 @@ var index = (function () {
     $('#card-thing-content').on('click.editthing', '.btn-editthing', _handelOpenEditThing);
     $('#card-thing-content').on('click.editdevice', '.btn-editdevice', _handelOpenEditDevice);
     $('#card-thing-content').on('click.deldevice', '.btn-deldevice', _hendelDeleteCardDevice);
-    // $('#btn-close').on('click', _handelCloseCard)
-    // _handelUpdateCardThing
-
-
-    // $('#btn-login').on('click', _handleLogin);
-
-
+    $('#nav-thing').on('click', _handelOpenAllThing);
+    $('#btn-searchAllthing').on('click', _handelsearchBar);
+   
     
-    // function _handleLogin() {
-    //     var username = $('#username').val();
-    //     var password = $('#password').val();
-    //     $.ajax({
-	// 		url: 'http://127.0.0.1:3000/signin',
-	// 		type: 'post',
-	// 		dataType: 'json',
-	// 		contentType: 'application/json',
-	// 		xhrFields: {
-	// 			withCredentials: true
-	// 		},
-	// 		data: JSON.stringify({
-	// 			username,
-	// 			password
-	// 		}), 
-	// 		success: function (data) {
-    //             console.log(data);
-    //             location.href = '/';
-    //             $('.forSignin').removeClass('hide');
-	// 	        $('.forNoSignin').addClass('hide');
-	// 		},
-	// 		error: function (jqXHR, statusCode, c) {
-	// 			console.log(jqXHR);
-	// 			if (jqXHR.status == 500) {
-	// 				alert('Wrong password.');
-	// 			}
-	// 		}
-	// 	})
-    // }
     _getUserInfo()
     .done(function (data) {
         console.log(data);
@@ -62,7 +31,7 @@ var index = (function () {
         console.log(_userInfo );
         if(_userInfo._id) {
             _renderThingCard ();
-            _renderDeviceCard ();
+            // _renderDeviceCard ();
             $('.forSignin').removeClass('hide');
 		    $('.forNoSignin').addClass('hide');
         } else {
@@ -87,7 +56,43 @@ var index = (function () {
 			})
 		);
     }
-
+    function _renderAllthingCard () {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/things',
+            type: 'get',
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (data) {
+                console.log('===================');
+                console.log(data);
+                $('#randerallthing').html('');
+                for (let allthing of data) {
+                    $('#randerallthing').prepend(`
+                        <div class="col-sm-6 col-lg-6 col-md-6 pt-1">
+                            <div class="card allthing" >
+                                <div class="card-body">												
+                                    <h2 class="card-title mb-1 titleleft ">Name: 
+                                        <span>${allthing.thingname}</span>
+                                    </h2>													
+                                    <h5 class="card-subtitle mb-2 text-muted titleleft">thingtype: 
+                                        <span>${allthing.thingtype}</span>
+                                    </h5>
+                                    <h5 class="card-text mb-0 titleleft">ThingId: <span class="span-color">${allthing.thingid}</span></h5>
+                                    <h5 class="card-text  titleleft">ThingKey: <span class="span-color">${allthing.thingkey}</span></h5>											
+                                    <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(allthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                } 
+            },
+            error: function(jqXHR) {
+                console.log(jqXHR);
+            }
+        })
+    }
     function _renderThingCard () {
         $.ajax({
             url: 'http://127.0.0.1:3000/info/things',
@@ -103,7 +108,7 @@ var index = (function () {
                 for (let cardthing of data) {
                     $('#randermything').prepend(`
                     <div class="col-sm-6 col-lg-6 col-md-6 pt-1">
-                        <div class="card mything" >
+                        <div id="cardmything" class="card mything" >
                             <div class="card-body">												
                                 <h2 class="card-title mb-1 titleleft ">Name: 
                                     <span>${cardthing.thingname}</span>
@@ -117,13 +122,15 @@ var index = (function () {
                                         ${_userInfo ? `<span data-thingid="${cardthing._id}" class="fa fa-pencil btn-editthing ml-0.5" ></span>` : ''}
                                     </button>
                                 </h5>
-                                <p class="card-text mb-0 titleleft">ThingId: <span>${cardthing.thingid}</span></p>
-                                <p class="card-text  titleleft">ThingKey: <span>${cardthing.thingkey}</span></p>											
+                                <h5 class="card-text mb-0 titleleft">ThingId: <span class="span-color">${cardthing.thingid}</span></h5>
+                                <h5 class="card-text  titleleft">ThingKey: <span class="span-color">${cardthing.thingkey}</span></h5>											
+                                <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(cardthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
                             </div>
                         </div>
                     </div>
                     `)
-                } 
+                }
+                $('#randermydevice div div').attr('id', '');
             },
             error: function(jqXHR) {
                 console.log(jqXHR);
@@ -145,7 +152,7 @@ var index = (function () {
                 for(randerdevice of data){
                     $('#randermydevice').prepend(`
                         <div class="col-sm-6 col-lg-6 col-md-6 pt-1">
-                            <div class="card mydevice" >
+                            <div id="cardmydevice" class="card mydevice" >
                                 <div class="card-body">												
                                     <h2 class="card-title mb-1 titleleft ">Name: 
                                         <span>${randerdevice.devicename}</span>
@@ -159,18 +166,26 @@ var index = (function () {
                                             ${_userInfo ? `<span data-deviceid="${randerdevice._id}" ice.devicename}" class="fa fa-pencil btn-editdevice ml-0.5" ></span>`:''}
                                         </button>
                                     </h5>
-                                    <p class="card-text mb-0 titleleft">deviceId: <span>${randerdevice.deviceid}</span></p>
-                                    <p class="card-text  titleleft">deviceKey: <span>${randerdevice.devicekey}</span></p>											
+                                    <h5 class="card-text mb-0 titleleft">deviceId: <span class="span-color">${randerdevice.deviceid}</span></h5>
+                                    <h5 class="card-text  titleleft">deviceKey: <span class="span-color">${randerdevice.devicekey}</span></h5>											
+                                    <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(randerdevice.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
                                 </div>
                             </div>
                         </div>
                     `)
                 }
+                $('#randermything div div').attr('id', '');
             },
             error: function (jqXHR) {
                 console.log(jqXHR);
             }
         })
+    }
+    function _handelOpenAllThing () {
+        $('#modal-creatbutton').addClass('hide');
+        $('#card-mything-mydevice').addClass('hide');
+        $('#card-allthing').removeClass('hide');
+        _renderAllthingCard ();
     }
     function _handelOpenEditDevice () {
         var id = $(this).data('deviceid');
@@ -232,6 +247,48 @@ var index = (function () {
 			alert('Login first');
 		}
     }
+    function _handelsearchBar () {
+        var search_value = $('#allSearchText').val();
+        $('#randerallthing div div').attr('id', 'cardallthing');
+        // $('#randermything div div').attr('id', 'cardmything');
+        // $('#randermydevice div div').attr('id', 'cardmydevice');
+        console.log(search_value);
+        var randermessage = $('#randerallthing div div').attr('id')||$('#randermything div div').attr('id')|| $('#randermydevice div div').attr('id');
+        console.log(randermessage);
+        var selector ;
+        switch (randermessage) {
+            case 'cardallthing' :
+                selector = $('#randerallthing>div');
+                break;        
+            case 'cardmydevice' :
+                selector =$('#randermydevice>div');
+                break;
+            case 'cardmything' :
+                selector =$('#randermything>div');
+                break;
+            default :
+                selector = $('#');
+                break;
+        } 
+        selector.each(function (index, value) {
+            var span = $(this).find("span");
+            console.log(span);
+            console.log("length:",span.length);
+            var span_length = span.length;
+            var flag = false;
+            for(var i=0 ;i<span_length ; i++) {
+                if(span[i].outerText.indexOf(search_value)>=0) {
+                    console.log("find:",this);
+                    $(this).removeClass('hide');
+                    flag = true;
+                    break
+                }
+            }
+            $('#allSearchText').val('');
+            flag ? $(this).removeClass('hide'):$(this).addClass('hide');
+        });
+    }
+
     function _hendelDeleteCardDevice () {
         if(confirm(`Delete this [Devicename ${$(this).data('devicename')} ]`)) {
             console.log(this);

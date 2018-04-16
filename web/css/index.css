@@ -4,8 +4,16 @@
 	display: none;
 }
 
+.allthing:hover {
+	box-shadow: 0 1px 2px 0 #000;
+} 
+
 .mything:hover {
 	box-shadow: 0 1px 2px 0 #000;
+}
+
+.span-color{
+	color: green;
 }
 
 .mydevice:hover {
@@ -16,6 +24,9 @@
 	text-align: left;
 }
 
+.titleright {
+	text-align: right;
+}
 
 .mything .btn-delthing {
 	position: absolute;
