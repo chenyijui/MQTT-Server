@@ -133,6 +133,7 @@ var index = (function () {
                                     <h5 class="card-subtitle mb-2 text-muted titleleft">thingtype: 
                                         <span>${allthing.thingtype}</span>
                                     </h5>
+                                    <h4 class="card-text mb-0 titleleft text-dark">owner: <span class="badge badge-secondary mt-2  text-ligth">${allthing.owner}</span></h4>
                                     <h5 class="card-text mb-0 titleleft">ThingId: <span class="text-warning">${allthing.thingid}</span></h5>
                                     <h5 class="card-text  titleleft">ThingKey: <span class="text-danger">${allthing.thingkey}</span></h5>											
                                     <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(allthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>

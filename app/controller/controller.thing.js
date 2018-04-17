@@ -30,6 +30,7 @@ exports.creat = function(req, res) {
             if(user.things.indexOf(thing._id)==-1) {
                 user.things.push(thing._id);   
             }
+            thing.owner = user.username;
             thing.save(function(err, thing){
                 if(err) {
                     res.status(500).send({message: 'some error'})
@@ -50,11 +51,10 @@ exports.findAll = function(req, res) {
     Thing.find(function(err, thing) {
         if(err) {
             res.status(500).send({message:'some error'});
-        }else {
-
+        } else {
             res.status(200).send(thing);
         }
-    });
+    })
 }
 
 exports.findUserAllThing = function(req, res) {
@@ -74,7 +74,7 @@ exports.findUserAllThing = function(req, res) {
 }
 
 exports.findOne = function(req, res) {
-    Thing.findById(req.params.thingId,function(err, thing){
+    Thing.findById(req.params.thingId, function(err, thing){
         if(err) {
             res.status(500).send({message:'some error'})
         }else {

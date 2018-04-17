@@ -5,6 +5,7 @@ var thingschema = new mongoose.Schema({
     thingtype:String,
     thingid: String,
     thingkey: String,
+    owner:String
 },{timestamps:true, usePushEach:true});
 
 const Thing = mongoose.model('Thing', thingschema);
