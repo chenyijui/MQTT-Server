@@ -178,6 +178,7 @@ var index = (function () {
                                         ${_userInfo ? `<span data-thingid="${cardthing._id}" class="fa fa-pencil btn-editthing" ></span>` : ''}
                                     </button>
                                 </h5>
+                                <h4 class="card-text mb-0 titleleft text-light"><a class="badge badge-info mt-2">Thing</a></h4>                                
                                 <h5 class="card-text mb-0 titleleft">ThingId: <span class="text-warning">${cardthing.thingid}</span></h5>
                                 <h5 class="card-text  titleleft">ThingKey: <span class="span-color">${cardthing.thingkey}</span></h5>											
                                 <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(cardthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
@@ -223,6 +224,7 @@ var index = (function () {
                                             ${_userInfo ? `<span data-deviceid="${randerdevice._id}" ice.devicename}" class="fa fa-pencil btn-editdevice" ></span>`:''}
                                         </button>
                                     </h5>
+                                    <h4 class="card-text mb-0 titleleft text-light"><a class="badge badge-info mt-2">Device</a></h4>                                                                       
                                     <h5 class="card-text mb-0 titleleft">deviceId: <span class="text-warning">${randerdevice.deviceid}</span></h5>
                                     <h5 class="card-text  titleleft">deviceKey: <span class="span-color">${randerdevice.devicekey}</span></h5>											
                                     <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(randerdevice.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
