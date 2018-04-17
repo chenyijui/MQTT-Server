@@ -73,7 +73,7 @@ exports.findUserAllDevice = function(req, res) {
             console.log(user);
             res.status(500).send({message: 'some error'});
             if(user === undefined ) {
-                res.status(404).send({message: 'can not find user devices'});
+                res.status(404).send({message: 'can not find devices with userid'});
             }
         }
         console.log(user.devices);

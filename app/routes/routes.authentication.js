@@ -51,8 +51,8 @@ module.exports = function(app) {
         if(req.session){
             req.session = null;
         } else {
-            res.send({message: "can not logout"});
+            res.status(404).send({message: "can not logout"});
         }
-        res.send({message: "success logout"});
+        res.status(200).send({message: "success logout"});
     });
 }

@@ -35,7 +35,7 @@ open browser
 - 修改 Device ID
 - 刪除 Device ID
 #### 
-- 確認註冊的device
+- 授權 由使用者新增的device
 
 | 	URI  			| HTTP Verb | Description   |finish|
 | -------- 			| --------  | --------       |------|
@@ -45,17 +45,17 @@ open browser
 | /info    | GET       | 取得"某使用"者資料 |O|
 | /info/things    | GET       | 取得"某使用"者things資料 |O|
 | /info/devices    | GET       | 取得"某使用"者devices資料 |O|
-| /users	| PUT		| 修改"某使用者"資料 |O|
+| /info	| PUT		| 修改"某使用者"資料 |O|
 | /users/:userId	| DELETE		| 刪除"某使用者"資料 |O|
-| /device          | POST      |  新增device |O|
-| /device/:deviceId        | GET       | 取得 "某個device"|O|
-| /device/:deviceId        | PUT       | 修改 "某個device"|O|
-| /device/:deviceId        | DELETE       | 刪除 "某個device"|O|
+| /devices         | POST      |  新增device |O|
+| /devices/:deviceId        | GET       | 取得 "某個device"|O|
+| /devices/:deviceId        | PUT       | 修改 "某個device"|O|
+| /devices/:deviceId        | DELETE       | 刪除 "某個device"|O|
 | /thing          | POST      |  新增thing |O|
-| /thing/:thingId        | GET       | 取得 "某個thing"|O|
-| /thing/:thingId        | PUT       | 修改 "某個thing"|O|
-| /thing/:thingId        | DELETE       | 刪除 "某個thing"|O|
-| /device/:deviceId/state        | GET       | 確認 註冊成功的device||
+| /things/:thingId        | GET       | 取得 "某個thing"|O|
+| /things/:thingId        | PUT       | 修改 "某個thing"|O|
+| /things/:thingId        | DELETE       | 刪除 "某個thing"|O|
+| /devices/:deviceId/state        | GET       | 授權由使用者新增的device|O|
 ## Thing/device ID &Thing/device KEY
 
 |  Thing   | value | 
@@ -82,7 +82,7 @@ open browser
 	"email": (string),
 	"username":(string),
 	"password":(string),
-	"things":[{ type:   Schema.Types.ObjectId, ref:   'thing' }
+	"things":[{ type:   Schema.Types.ObjectId, ref:   'thing' }]
 	"devices":[{ type:   Schema.Types.ObjectId, ref:   'device' }],
 	"timestamp": '2017-06-16T06:25:08+00:00'
  }
@@ -98,6 +98,7 @@ open browser
 	"thingid":(string),
 	"thingname":(string),
 	"thingkey":(string),
+	"thingtype":(string),
 	"timestamp": '2017-06-16T06:25:08+00:00'
  }
  ...
@@ -114,13 +115,13 @@ open browser
 	"devicepw":(string),
 	"devicekey":(string),
 	"timestamp": '2017-06-16T06:25:08+00:00'
-	"stateflg":(number)
+	"stateflag":(number)
  }
  ...
 ]
 ```
 # API
-## 使用者
+
 ### 登入
 POST `/signin`
 #### Req
@@ -179,13 +180,29 @@ jeson object
     ```
     {message: "system error"}
     ```
+### 登出
+POST `/logout`
+#### Req
+none
+#### Res
+-	`200 (ok)`
+jeson object
+    ```
+    {message: "success logout"}
+    ```
+-	`404 (err)`
+jeson object
+    ```
+    {message: "can not logout"}
+    ```
 	
 ### 新增Thing
 POST `/thing`
 #### req
 ```
 {
-	"thingname":(String)
+	"thingname":(String),
+	"thingtype":(String)
 }
 ```
 #### res
@@ -254,6 +271,8 @@ GET `/info/things`
 #### req
 none
 #### res
+-	`200`
+jeson object
 ```
 [
 	{
@@ -268,12 +287,23 @@ none
 	...
 ]
 ````
-
+-	`404 (err)`
+jeson object
+```
+{message: 'can not find things with userid'}
+```
+-	`500(err)`
+jeson object
+```
+{message:'some error'}
+```
 ### 取得"某使用"者devices資料
 GET `/info/devices`
 #### req
 none
 #### res
+-	`200`
+jeson object
 ```
 [
 	{
@@ -290,3 +320,167 @@ none
 	...
 ]
 ````
+
+-	`404 (err)`
+jeson object
+```
+{message: 'can not find devices with userid'}
+```
+-	`500(err)`
+jeson object
+```
+{message:'some error'}
+```
+### 修改 使用者 資料
+PUT `/info`
+#### req
+```
+{
+	"name":(String),
+	"password":  (String),
+	"email": (String)
+}
+```
+#### res
+-	`200`
+jeson object
+```
+ {
+	"_id":(strring),
+	"role": (admin or role),
+	"name": (string),
+	"email": (string),
+	"username":(string),
+	"password":(string),
+	"things":[{ type:   Schema.Types.ObjectId, ref:   'thing' }]
+	"devices":[{ type:   Schema.Types.ObjectId, ref:   'device' }],
+	"timestamp": '2017-06-16T06:25:08+00:00'
+ }
+```
+-	`403 (err)`
+jeson object
+```
+{message: "please login"}
+```
+### 刪除 使用者 資料
+DELETE `/users/:userId`
+#### req
+none
+#### res
+-	`200`
+jeson object
+```
+{message: 'success remove'}
+```
+-	`500 (err)`
+jeson object
+```
+{message:"can not remove"}
+```
+### 修改 Device 資料
+PUT `/devices/:deviceId`
+#### req
+{
+	"devicetype":(string),
+	"devicepw":(string),
+	"devicename":(string)
+}
+#### res
+-	`200`
+jeson object
+```
+ {
+	"_id":(strring),
+	"devicetype":(string),
+	"devicename":(string),
+	"deviceid":(string),
+	"devicepw":(string),
+	"devicekey":(string),
+	"timestamp": '2017-06-16T06:25:08+00:00'
+	"stateflag":(number)
+ }
+```
+-	`403 (err)`
+jeson object
+```
+{message: 'some error'}
+```
+
+
+### 刪除 Device 資料
+DELETE `/devices/:deviceId`
+#### req
+none
+#### res
+-	`200`
+jeson object
+```
+{message: 'success remove'}
+```
+-	`500 (err)`
+jeson object
+```
+{message:"some error"}
+```
+### 修改 Thing 資料
+PUT `/things/:thingId`
+#### req
+{
+	"thingtype":(string),
+	"thingpw":(string),
+	"thingname":(string)
+}
+#### res
+-	`200`
+jeson object
+```
+ {
+	"_id":(strring),
+	"thingid":(string),
+	"thingname":(string),
+	"thingkey":(string),
+	"thingtype":(string),
+	"timestamp": '2017-06-16T06:25:08+00:00'
+ }
+```
+-	`403 (err)`
+jeson object
+```
+{message: 'some error'}
+```
+
+### 刪除 Thing 資料
+DELETE `/things/:thingId`
+#### req
+none
+#### res
+-	`200`
+jeson object
+```
+{message: 'success remove'}
+```
+-	`500 (err)`
+jeson object
+```
+{message:"can not remove"}
+```
+
+### 授權 Device
+GET `/devices/:deviceId/state`
+#### req
+none
+#### res
+-	`200`
+jeson object
+```
+{message:"deviceId : 1"})
+```
+-	`403(err)`
+```
+{message:'can not find device'}
+```
+-	`500 (err)`
+jeson object
+```
+{message:"can not remove"}
+```

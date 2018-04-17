@@ -65,7 +65,7 @@ exports.findUserAllThing = function(req, res) {
             console.log(user);
             res.status(500).send({message: 'some error'});
             if(user === undefined ) {
-                res.status(404).send({message: 'can not find user things'});
+                res.status(404).send({message: 'can not find things with userid'});
             }
         } else {
             res.send(user.things);
