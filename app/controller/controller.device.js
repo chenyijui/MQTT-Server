@@ -123,3 +123,20 @@ exports.update = function(req, res) {
         } 
     });
 }
+
+exports.flagStatus = function(req, res) {
+    Device.findById(req.params.deviceId, function(err, device) {
+        if(err) {
+            res.status(403).send({message:'can not find device'});
+        } else {
+            device.stateflag = 1;
+            device.save(function(err ,device){
+                if(err) {
+                    res.status(500).send({message:'some error'});
+                } else {
+                    res.status(200).send({message:req.params.deviceId+': '+device.stateflag});
+                }
+            })
+        }
+    })
+}

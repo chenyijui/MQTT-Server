@@ -13,4 +13,6 @@ module.exports = function(app) {
     app.delete('/devices/:deviceId', devices.delete);
     //find all devices with userId
     app.get('/info/devices', authentication.authenticationMiddleware, devices.findUserAllDevice);
+    //state device flag
+    app.get('/devices/:deviceId/state', devices.flagStatus);
 }

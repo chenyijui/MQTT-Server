@@ -1,23 +1,19 @@
 .forSignin.hide,
 .forNoSignin.hide,
+.forAdmin.hide,
 .hide {
 	display: none;
 }
 
-.allthing:hover {
-	box-shadow: 0 1px 2px 0 #000;
-} 
-
-.mything:hover {
-	box-shadow: 0 1px 2px 0 #000;
+.Authdevice:hover,
+.allthing:hover,
+.mything:hover,
+.mydevice:hover {
+	box-shadow: 0 1px 2px 0 #000;	
 }
 
 .span-color{
 	color: green;
-}
-
-.mydevice:hover {
-	box-shadow: 0 1px 2px 0 #000;
 }
 
 .titleleft {
@@ -28,39 +24,29 @@
 	text-align: right;
 }
 
-.mything .btn-delthing {
+.mything .btn-delthing,
+.mydevice .btn-deldevice,
+.Authdevice .btn-delAuthdevice,
+.Authdevice .btn-editAuthdevice {
 	position: absolute;
 	display:none; 
 }
-.mything .btn-editthing {
-	position: absolute;
-	font-size: 14px;
-	display:none; 
-}
-
-.mydevice .btn-deldevice {
-	position: absolute;
-	display:none; 
-}
-
+.mything .btn-editthing,
 .mydevice .btn-editdevice {
 	position: absolute;
-	font-size: 14px;
+	font-size: 20px;
 	display:none; 
 }
 
-.mything:hover .btn-delthing {
+.Authdevice:hover .btn-editAuthdevice {
 	display: initial;
+	font-size: 20px;
 }
 
-.mything:hover .btn-editthing {
-	display: initial;
-}
-
-.mydevice:hover .btn-deldevice {
-	display: initial;
-}
-
-.mydevice:hover .btn-editdevice {
+.mything:hover .btn-delthing,
+.mything:hover .btn-editthing,
+.mydevice:hover .btn-deldevice,
+.mydevice:hover .btn-editdevice,
+.Authdevice:hover .btn-delAuthdevice {
 	display: initial;
 }

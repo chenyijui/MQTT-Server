@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role="navigation">
 		<a class="navbar-brand" href="">MQTT </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,60 +29,68 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
-					<a id="nav-thing" class="nav-link" >All Things</a>
+					<a id="nav-thing" class="nav-link forSignin hide" >All Things</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" >All Devices</a>
+					<a  id="nav-device" class="nav-link  forAdmin hide" >All Devices</a>
 				</li>
 				<!-- <li class="nav-item"><button id="" type="button" class="btn btn-secondary forLogin hide" data-toggle="modal" data-target="#modal-userInfo">
 						Info
 					</button></li> -->
 			</ul>
 			<form class="form-inline my-2 my-lg-0">
-					<div class="input-group">
-							<input id="allSearchText" class="form-control mr-sm-1 " type="search" placeholder="Search" aria-label="Search">
-							<button id="btn-searchAllthing" class="btn btn-outline-secondary " type="button">
-								<i class="fa fa-search"></i>
-							</button>
-						</div>
+				<div class="input-group forSignin hide">
+					<input id="allSearchText" class="form-control mr-sm-1 " type="search" placeholder="Search" aria-label="Search">
+					<button id="btn-searchAllthing" class="btn btn-outline-secondary " type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
 			</form>
 			<ul class="navbar-nav flex-row mr-lg-0 forSignin hide ">
 				<li class="nav-item dropdown glyphicon glyphicon-home">
-					<a class="nav-link dropdown-toggle mr-3 mr-lg-0" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i><span class="caret"></span>
+					<a class="nav-link dropdown-toggle mr-3 mr-lg-0" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-secret"></i><span class="caret"></span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-						<a class="dropdown-item " id="dropdown-info" data-toggle="modal" data-target="#modal-userInfo">Info</a>
-						<a class="dropdown-item" id="dropdown-logout" >Logout</a>
+						<a class="dropdown-item pr-2 " id="dropdown-info" data-toggle="modal" data-target="#modal-userInfo"><i class="fa fa-vcard  mr-2"></i>Info</a>
+						<a class="dropdown-item " id="dropdown-info" data-toggle="modal" data-target="#modal-creatthing"><i class="fa fa-plus-circle  mr-2"></i>Creat Thing</a>
+						<a class="dropdown-item " id="dropdown" data-toggle="modal" data-target="#modal-creatdevice"><i class="fa fa-plus-circle mr-2"></i>Creat Device</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" id="dropdown-logout" ><i class="fa fa-sign-out mr-2"></i>Logout</a>
 					</div>
 				</li>
 			</ul>
-				<a href="/login.html" class="btn btn-outline-secondary mr-1 my-2 my-sm-0 forNoSignin hide">Login</a>	
+				<a href="./login.html" id="nav-signin" class="btn btn-outline-secondary mr-1 my-2 my-sm-0 forNoSignin hide">Signin</a>	
 		</div>
 	</nav>
+	
 	<div class="container pt-5">
-		<div id="modal-creatbutton" class="row mb-3 pt-3">
-				<div class="col-sm-6 col-lg-6 col-md-6 ">
-					<!-- Button trigger modal -->
-					<button  class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#modal-creatthing">
-						creat thing
-					</button>
-					<button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#modal-creatdevice">
-						creat device
-					</button>
-				</div>
-		</div>
 		<!-- card:MyThing MyDevice  -->
-		<div id="card-mything-mydevice"class="card text-center pt2 mb-3">
+		<div id="card-mything-mydevice"class="card text-center mt-3 mb-3 forSignin hide">
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12">
 					<div class="card-header">
 						<ul class="nav nav-tabs card-header-tabs" role="tablist">
-							<li class="nav-item">
-								<a id="nav-mything" class="nav-link  span-color active" data-toggle="tab" role="tab" aria-controls="mything" aria-selected="true" href="#mything">MyThing</a>
+							<li class="nav-item ">
+								<a id="nav-mything" class="nav-link  span-color active mt-2" data-toggle="tab" role="tab" aria-controls="mything" aria-selected="true" href="#mything">MyThing</a>
+							</li>
+							<li class="nav-item ">
+								<a id="nav-mydevice" class="nav-link span-color mt-2" data-toggle="tab" role="tab" aria-controls="mydevice" aria-selected="false" href="#mydevice">MyDevice</a>
+							</li>
+							<li class="nav-item  col-6 ">
 							</li>
 							<li class="nav-item">
-								<a id="nav-mydevice" class="nav-link span-color" data-toggle="tab" role="tab" aria-controls="mydevice" aria-selected="false" href="#mydevice">MyDevice</a>
+								<!-- Button trigger modal -->
+								<div class="d-none d-lg-block">
+									<button  class=" inline  btn btn-secondary   mb-1" data-toggle="modal" data-target="#modal-creatthing">
+										creat thing
+									</button>
+									<button type="button" class="inline btn btn-secondary mb-1 " data-toggle="modal" data-target="#modal-creatdevice">
+										creat device
+									</button>
+								</div>
+								
 							</li>
+											
 						</ul>
 					</div>
 					<div class="card-body ">
@@ -223,7 +230,70 @@
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>
+		<!-- card:Authentication Devices   -->
+		<div id="card-alldevice" class="card text-center mt-3 mb-3 hide">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="card-header">
+						<ul class="nav nav-tabs card-header-tabs " role="tablist">
+							<li class="nav-item mt-1">
+								<a class="nav-link  span-color active" data-toggle="tab" role="tab" aria-controls="authDevice" aria-selected="true" href="#allthing">Authentication Devices</a>
+							</li>
+							<!-- <li class="nav-item col-4">
+								<a class="badge badge-info mt-2">Authorized</a>
+								<a href="#" class="badge badge-danger mt-2">Unauthorized</a>
+							</li> -->
+							<li class="nav-item col-1">
+								<div class="dropdown show mt-1">
+									<a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										
+									</a>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a id="dropdown-authorized" class="dropdown-item" href="#">Authorized</a>
+										<a id="dropdown-unauthorized" class="dropdown-item" href="#">Unauthorized</a>
+									</div>
+								</div>
+							</li>
+						</ul>		
+					</div>
+					<div class="card-body ">
+						<div class="tab-content" id="card-authdevice-content">
+							<div class="tab-pane fade show active" id="authDevice" role="tabpanel" aria-labelledby="authDevice-tab">
+								<div id="randerauthdevice" class="row pt-1 m-2">
+									<!-- card:Authentication one device -->
+									<!-- <div class="col-sm-6 col-lg-6 col-md-6 pt-1 ">
+										<div id="cardAuthMydevice" class="card AuthMydevice" >
+											<div class="card-body bg-light">
+												<button type="button" class="close mr-2" >
+													<span class="fa fa fa-close btn-delAuthMydevice" aria-hidden="true"></span>
+												</button>												
+												<h2 class="card-title mb-1 titleleft ">Name: 
+													<span>${randerdevice.devicename}</span>
+													
+													<button type="button" class="close mr-2" >
+														<span class="fa fa-check-square btn-editAuthMydevice" aria-hidden="true"></span>
+													</button>
+												</h2>													
+												<h5 class="card-subtitle mb-2 text-muted titleleft">devicetype: 
+													<span>${randerdevice.devicetype}</span>
+												</h5>
+												<h4 class="card-text mb-0 titleleft text-info">Authorized</h4>
+												<h4 class="card-text mb-0 titleleft text-danger">Unauthorized</h4>
+												<h5 class="card-text mb-0 titleleft">deviceId: <span class="span-color">${randerdevice.deviceid}</span></h5>
+												<h5 class="card-text  titleleft">deviceKey: <span class="span-color">${randerdevice.devicekey}</span></h5>											
+												<h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(randerdevice.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
+											</div>
+										</div>
+									</div> -->
+								</div>
+							</div>				
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	
 	<!-- Modal : user info-->
