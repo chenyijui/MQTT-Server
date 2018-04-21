@@ -11,6 +11,9 @@ var userschema = new mongoose.Schema ({
     }],
     devices:[{
         type: mongoose.Schema.Types.ObjectId, ref: 'Device'
+    }],
+    view:[{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Thing'
     }]
 },{timestamps:true, usePushEach:true});
 

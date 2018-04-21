@@ -52,8 +52,8 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 						<a class="dropdown-item pr-2 " id="dropdown-info" data-toggle="modal" data-target="#modal-userInfo"><i class="fa fa-vcard  mr-2"></i>Info</a>
-						<a class="dropdown-item " id="dropdown-info" data-toggle="modal" data-target="#modal-creatthing"><i class="fa fa-plus-circle  mr-2"></i>Creat Thing</a>
-						<a class="dropdown-item " id="dropdown" data-toggle="modal" data-target="#modal-creatdevice"><i class="fa fa-plus-circle mr-2"></i>Creat Device</a>
+						<a class="dropdown-item " id="dropdown-info" data-toggle="modal" data-target="#modal-creatething"><i class="fa fa-plus-circle  mr-2"></i>Create Thing</a>
+						<a class="dropdown-item " id="dropdown" data-toggle="modal" data-target="#modal-createdevice"><i class="fa fa-plus-circle mr-2"></i>Create Device</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" id="dropdown-logout" ><i class="fa fa-sign-out mr-2"></i>Logout</a>
 					</div>
@@ -81,11 +81,11 @@
 							<li class="nav-item">
 								<!-- Button trigger modal -->
 								<div class="d-none d-lg-block">
-									<button  class=" inline  btn btn-secondary   mb-1" data-toggle="modal" data-target="#modal-creatthing">
-										creat thing
+									<button  class=" inline  btn btn-secondary   mb-1" data-toggle="modal" data-target="#modal-creatething">
+										create thing
 									</button>
-									<button type="button" class="inline btn btn-secondary mb-1 " data-toggle="modal" data-target="#modal-creatdevice">
-										creat device
+									<button type="button" class="inline btn btn-secondary mb-1 " data-toggle="modal" data-target="#modal-createdevice">
+										create device
 									</button>
 								</div>
 								
@@ -186,7 +186,7 @@
 						</ul>				
 					</div>
 					<div class="card-body ">
-						<div class="tab-content" id="card-thing-content">
+						<div class="tab-content" id="card-Allthing-content">
 							<div class="tab-pane fade show active" id="allthing" role="tabpanel" aria-labelledby="allthing-tab">
 								<div id="randerallthing" class="row pt-1 m-2">
 									<!-- One crad:Thing -->
@@ -338,8 +338,8 @@
 			</div>
 		</div>
 	</div>
-	<!-- Modal : creat thing-->
-	<div class="modal fade" id="modal-creatthing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- Modal : create thing-->
+	<div class="modal fade" id="modal-creatething" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -350,26 +350,32 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="creatThingThingname" class="col-2 col-form-label">Thingname</label>
+						<label for="createThingThingname" class="col-2 col-form-label">Thingname</label>
 						<div class="col-8 offset-1">
-							<input class="form-control" type="text" id="creatThingThingname">
+							<input class="form-control" type="text" id="createThingThingname">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="creatThingThingtype" class="col-2 col-form-label">Thingtype</label>
+						<label for="createThingThingtype" class="col-2 col-form-label">Thingtype</label>
 						<div class="col-8 offset-1">
-							<input type="text" class="form-control" id="creatThingThingtype">
+							<input type="text" class="form-control" id="createThingThingtype">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="createThingDescription" class="col-2 col-form-label">Description</label>
+						<div class="col-8 offset-1">
+							<textarea class="form-control" rows="10" id="createThingDescription"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" id='btn-creatThing' class="btn btn-secondary">creat</button>
+					<button type="button" id='btn-createThing' class="btn btn-secondary">create</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- Modal : creat device-->
-	<div class="modal fade" id="modal-creatdevice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- Modal : create device-->
+	<div class="modal fade" id="modal-createdevice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -380,21 +386,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="creatDeviceDevicename" class="col-2 col-form-label">Devicename</label>
+						<label for="createDeviceDevicename" class="col-2 col-form-label">Devicename</label>
 						<div class="col-8 offset-1" >
-							<input class="form-control" type="text" id="creatDeviceDevicename">
+							<input class="form-control" type="text" id="createDeviceDevicename">
 						</div>
 					</div>
 					<div class="form-group row">
-							<label for="creatDeviceDevicepw" class="col-2 col-form-label">Devicepw</label>
+							<label for="createDeviceDevicepw" class="col-2 col-form-label">Devicepw</label>
 							<div class="col-8 offset-1" >
-								<input class="form-control" type="text" id="creatDeviceDevicepw">
+								<input class="form-control" type="text" id="createDeviceDevicepw">
 							</div>
 						</div>
 					<div class="form-group row">
-						<label for="creatDeviceDevicetype" class="col-2 col-form-label">Devicetype</label>
+						<label for="createDeviceDevicetype" class="col-2 col-form-label">Devicetype</label>
 						<div class="col-8 offset-1">
-							<select class="form-control" id="creatDeviceDevicetype">
+							<select class="form-control" id="createDeviceDevicetype">
 								<option value="Arduino">Arduino</option>
 								<option value="RaspberryPi">Raspberry Pi</option>
 								<option value="Others">Others</option>
@@ -403,7 +409,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" id='btn-creatDevice' class="btn btn-secondary">creat</button>
+					<button type="button" id='btn-createDevice' class="btn btn-secondary">create</button>
 				</div>
 			</div>
 		</div>
@@ -429,6 +435,12 @@
 						<label for="updateThingThingtype" class="col-2 col-form-label">Thingtype</label>
 						<div class="col-8 offset-1">
 							<input type="text" class="form-control" id="updateThingThingtype">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="updateThingDescription" class="col-2 col-form-label">Description</label>
+						<div class="col-8 offset-1">
+							<textarea class="form-control" rows="10" id="updateThingDescription"></textarea>
 						</div>
 					</div>
 				</div>
@@ -478,6 +490,129 @@
 			</div>
 		</div>
 	</div>
+	<!-- Modal: ThingContent -->
+	<div class="modal fade" id="modal-thingContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="thihgTitle">NAMEEEEEEEEEE</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<h5 class="card-text mb-0 titleleft" >ThingId: <span class="text-warning" id="thingid">${cardthing.thingid}</span></h5>
+                                <h5 class="card-text  titleleft" >ThingKey: <span class="span-color" id="thingkey">${cardthing.thingkey}</span></h5>	
+							</div>
+						</div>
+						<div class="row">
+							<div id="thingContent " class="col-12 ">
+								<h5 class="text-info mt-2" >description:</h5>
+								<span id="thingdescription">A room is any distinguishable space within a structure. Usually, a room is separated from other spaces or passageways by interior walls and windows moreover, it is separated from outdoor areas by an exterior wall, sometimes with a door.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					Created at&nbsp;<span id="thingTime">2017/07/07</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal: ThingContent -->
+	<div class="modal fade" id="modal-AllthingContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="allthihgTitle">NAMEEEEEEEEEE</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<h5 class="card-text mb-0 titleleft" >ThingId: <span class="text-danger" id="allthingid">**********</span></h5>
+								<h5 class="card-text  titleleft" >ThingKey: <span class="text-danger" id="allthingkey">**********</span></h5>	
+							</div>
+						</div>
+						<div class="row">
+							<div id="allthingContent " class="col-12 ">
+								<h5 class="text-info mt-2" >description:</h5>
+								<span id="allthingdescription">A room is any distinguishable space within a structure. Usually, a room is separated from other spaces or passageways by interior walls and windows moreover, it is separated from outdoor areas by an exterior wall, sometimes with a door.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					Created at&nbsp;<span id="allthingTime">2017/07/07</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal: Interested users -->
+	<div class="modal fade" id="modal-" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="allthihgTitle">NAMEEEEEEEEEE</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<ul class="list-group">
+								<li class="list-group-item">Cras justo odio</li>
+								<li class="list-group-item">Dapibus ac facilisis in</li>
+								<li class="list-group-item">Morbi leo risus</li>
+								<li class="list-group-item">Porta ac consectetur ac</li>
+								<li class="list-group-item">Vestibulum at eros</li>
+							</ul>
+							<div class="col-12">
+								<h5 class="card-text mb-0 titleleft" >ThingId: <span class="text-danger" id="allthingid">**********</span></h5>
+								<h5 class="card-text  titleleft" >ThingKey: <span class="text-danger" id="allthingkey">**********</span></h5>	
+							</div>
+						</div>
+						<div class="row">
+							<div id="allthingContent " class="col-12 ">
+								<h5 class="text-info mt-2" >description:</h5>
+								<span id="allthingdescription">A room is any distinguishable space within a structure. Usually, a room is separated from other spaces or passageways by interior walls and windows moreover, it is separated from outdoor areas by an exterior wall, sometimes with a door.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					Created at&nbsp;<span id="allthingTime">2017/07/07</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal : Interested users-->
+	<div class="modal fade" id="modal-interestUserList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="InterestUser">Info</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="list-group" id="userList">
+							<!-- <button type="button" class="list-group-item list-group-item-info list-group-item-action"><span class="fa fa-user mr-2"></span>${username}Dapibus ac facilisis in</button> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	<!--Footer-->
 	<footer  class="page-footer font-small indigo pt-0">
 		<!--Footer Links-->

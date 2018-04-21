@@ -1,4 +1,5 @@
 const User = require('../module/module.user');
+const Thing = require('../module/module.thing');
 const bcrypt = require('bcrypt-nodejs');
 exports.creat = function(req, res) {
     
@@ -68,4 +69,68 @@ exports.delete = function(req, res) {
         }
     })
     res.status(200).send({message: 'success remove'});
+}
+
+exports.handleAddView = function(req, res) {
+    console.log(req.params.userId);
+    console.log(req.params.thingId);
+    
+    User.findById({_id:req.params.userId}, function(err, user) {
+        if(err){
+            res.status(500).send({message:"some error"});
+        } else {
+            console.log('=========================', user);
+            console.log(user.view.indexOf(req.params.thingId));
+            if(user.view.indexOf(req.params.thingId)!= -1) {
+                res.status(403).send({message:"has add the thing"});
+            } else {
+                user.view.push(req.params.thingId);
+                user.save();
+                console.log(user);
+            }
+            console.log(user);
+            Thing.findById({_id:req.params.thingId}, function(err, thing) {
+                if(err) {
+                    res.status(500).send({message:"some error"});
+                }else {
+                    if(thing.interest.indexOf(req.params.userId)!= -1){
+                        var index = thing.interest.indexOf(req.params.userId);
+                        thing.interest.splice(index,1);
+                        thing.save();
+                        res.status(200).send({message:"success"});
+                    }
+                }
+            })
+        }
+    })
+}
+
+exports.handleFindAllView = function(req, res) {
+    Thing.find({},'_id thingtype thingname description owner interest createdAt updatedAt', function(err, thing) {
+        if(err) {
+            res.status(500).send({message:"some error"});
+        } else {
+            console.log(thing);
+            User.findById({_id: req.session.passport.user})
+            .populate('view')
+            .exec(function(err, user){
+                var userview = user.view;
+                for(let datathing of thing){
+                    for(let viewthing of userview){
+                        let datathing_id = JSON.stringify(datathing._id);
+                        let viewthing_id = JSON.stringify(viewthing._id);
+                        if(datathing_id === viewthing_id) {
+                            console.log('FFFFFFFFFFFFFF');
+                            datathing.thingid= viewthing.thingid;
+			                datathing.thingkey= viewthing.thingkey;
+                            console.log(thing);
+                            break;
+                        }
+                    }
+                }
+                console.log(user);
+                res.send(thing);
+            })
+        }
+    })
 }

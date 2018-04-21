@@ -1,3 +1,4 @@
+.allthing .btn-getThingInfo,
 .forSignin.hide,
 .forNoSignin.hide,
 .forAdmin.hide,
@@ -24,6 +25,8 @@
 	text-align: right;
 }
 
+
+
 .mything .btn-delthing,
 .mydevice .btn-deldevice,
 .Authdevice .btn-delAuthdevice,
@@ -42,7 +45,7 @@
 	display: initial;
 	font-size: 20px;
 }
-
+.allthing:hover .btn-getThingInfo,
 .mything:hover .btn-delthing,
 .mything:hover .btn-editthing,
 .mydevice:hover .btn-deldevice,

@@ -13,4 +13,6 @@ module.exports = function(app) {
     app.put('/things/:thingId', things.update);
     //find all things with userId
     app.get('/info/things', authentication.authenticationMiddleware, things.findUserAllThing);
+    //add interest 
+    app.get('/things/:thingId/interest', things.handleAddInterest);
 }

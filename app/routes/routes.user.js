@@ -11,4 +11,8 @@ module.exports = function(app) {
     app.put('/info', authentication.authenticationMiddleware, users.update);
     //delete user
     app.delete('/users/:userId', users.delete);
+    //add view
+    app.get('/info/:userId/view/:thingId', users.handleAddView);
+    //find view
+    app.get('/info/view', users.handleFindAllView);
 };

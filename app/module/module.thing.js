@@ -5,7 +5,11 @@ var thingschema = new mongoose.Schema({
     thingtype:String,
     thingid: String,
     thingkey: String,
-    owner:String
+    owner:String,
+    description:String,
+    interest:[{
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'
+    }]
 },{timestamps:true, usePushEach:true});
 
 const Thing = mongoose.model('Thing', thingschema);

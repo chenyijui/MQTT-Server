@@ -21,6 +21,7 @@ exports.creat = function(req, res) {
             thingtype:req.body.thingtype,
             thingid: thingId_Encrypt,
             thingkey: thingkey_Encrypt,
+            description:req.body.description || '',
         });
         console.log(thing);
         User.findById({_id: req.session.passport.user}, function(err, user){
@@ -74,13 +75,22 @@ exports.findUserAllThing = function(req, res) {
 }
 
 exports.findOne = function(req, res) {
-    Thing.findById(req.params.thingId, function(err, thing){
+    Thing.findById(req.params.thingId)
+    .populate('interest')
+    .exec(function(err, thing){
         if(err) {
-            res.status(500).send({message:'some error'})
-        }else {
+            res.status(500).send({message: 'some error'});
+        } else {
             res.status(200).send(thing);
         }
     })
+
+    // function(err, thing){
+    //     if(err) {
+    //         res.status(500).send({message:'some error'})
+    //     }else {
+    //         res.status(200).send(thing);
+    //     }
 }
 
 exports.update = function(req, res) {
@@ -94,10 +104,11 @@ exports.update = function(req, res) {
             var thingId_Encrypt = md5(thingId);
             var thingKey = thingId_Encrypt + keys.secret.secretkey;
             var thingkey_Encrypt = md5(thingKey);
-            thing.thingname = req.body.thingname;
-            thing.thingtype =req.body.thingtype;            
-            thing.thingid = thingId_Encrypt;
-            thing.thingkey = thingkey_Encrypt;
+            thing.thingname = req.body.thingname || thing.thingname;
+            thing.thingtype = req.body.thingtype ||thing.thingtype;
+            thing.description = req.body.description || thing.description;     
+            // thing.thingid = thingId_Encrypt;
+            // thing.thingkey = thingkey_Encrypt;
             console.log(thing);
             thing.save(function(err, thing){
                 res.status(200).send(thing);
@@ -114,4 +125,20 @@ exports.delete = function(req, res) {
             res.status(200).send({message: 'success remove'});
         }
     });
+}
+
+exports.handleAddInterest = function (req, res) {
+    Thing.findById({_id:req.params.thingId}, function(err, thing) {
+        if(err) {
+            res.status(500).send({message:"some error"});
+        } else {
+            if(thing.interest.indexOf(req.session.passport.user)!= -1){
+                res.status(404).send({message:"has sent request"});
+            }else {
+                thing.interest.push(req.session.passport.user);
+                thing.save();
+                res.status(200).send({message:'success'});
+            } 
+        }
+    })
 }

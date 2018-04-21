@@ -7,19 +7,24 @@ var index = (function () {
     }
     //userInfo
     var _userInfo = null;
+    var _userThing = null;
+    var _userViewThing = null;
     $('#dropdown-info').on('click', _handleOpenUserModal);
     $('#nav-mydevice').on('click', _renderDeviceCard);
     $('#nav-mything').on('click', _renderThingCard);
     $('#btn-updateUserInfo').on('click', _handleUpdateUserInfo);
     $('#dropdown-logout').on('click', _handleLogout);
-    $('#btn-creatDevice').on('click', _handleCreatDevice);
-    $('#btn-creatThing').on('click', _handleCreatThing);
+    $('#btn-createDevice').on('click', _handleCreatDevice);
+    $('#btn-createThing').on('click', _handleCreatThing);
     $('#btn-updateThing').on('click', _handleUpdateCardThing);
     $('#btn-updateDevice').on('click', _handleUpdateCardDevice);
     $('#card-thing-content').on('click.delthing', '.btn-delthing', _handleDeleteCardThing);
     $('#card-thing-content').on('click.editthing', '.btn-editthing', _handleOpenEditThing);
     $('#card-thing-content').on('click.editdevice', '.btn-editdevice', _handleOpenEditDevice);
     $('#card-thing-content').on('click.deldevice', '.btn-deldevice', _handleDeleteCardDevice);
+    $('#card-thing-content').on('click.readMore', '.btn-readmore', _handleThingReadMore);
+    $('#card-Allthing-content').on('click.readMoreAllthing', '.btn-readmoreAllthing', _handleAllThingReadMore);
+    $('#card-Allthing-content').on('click.getthingInfo', '.btn-getThingInfo', _handleOpenGetThingInfo);
     $('#nav-thing').on('click', _handleOpenAllThing);
     $('#nav-device').on('click', _handleOpenAllDevice);
     $('#btn-searchAllthing').on('click', _handlesearchBar);
@@ -27,7 +32,8 @@ var index = (function () {
     $('#card-authdevice-content').on('click.editAuthdevice', '.btn-editAuthdevice', _handleEditAuthDevice);
     $('#dropdown-authorized').on('click', _handlDropdownAuth);
     $('#dropdown-unauthorized').on('click', _handlDropdownUnauth);
-   
+    $('#card-thing-content').on('click.thingnewuser', '.btn-thingNewUser', _handleOpenInterestedUser);
+    $('#userList').on('click.auththinguser', '.btn-interestuser', _handleAuthThingUser);
     
     _getUserInfo()
     .done(function (data) {
@@ -84,7 +90,7 @@ var index = (function () {
                             <div id="cardAuthdevice" class="card Authdevice" >
                                 <div class="card-body bg-light">
                                     <button type="button" class="close mr-2" >
-                                        <span data-authdeviceid="${alldevice._id}" data-authdevicename="${alldevice.devicename}" class="fa fa fa-close btn-delAuthdevice aria-hidden="true"></span>
+                                        <span data-authdeviceid="${alldevice._id}" data-authdevicename="${alldevice.devicename}" class="fa fa-close btn-delAuthdevice aria-hidden="true"></span>
                                     </button>												
                                     <h2 class="card-title mb-1 titleleft ">Name: 
                                         <span>${alldevice.devicename}</span>
@@ -96,10 +102,10 @@ var index = (function () {
                                 </button>`}
                                     </h5>
                                     ${(alldevice.stateflag==1) ? `<h4 class="card-text mb-0 titleleft text-info"><span class="badge badge-info mt-2">Authorized</span></h4>`:`<h4 class="card-text mb-0 titleleft text-danger"><span class="badge badge-danger mt-2">Unauthorized</span></h4>`}
-                                    <h5 class="card-text mb-0 titleleft">deviceId: <span class="span-color">${alldevice.deviceid}</span></h5>
-                                    <h5 class="card-text  titleleft">deviceKey: <span class="span-color">${alldevice.devicekey}</span></h5>											
+                                    <h5 class="card-text mb-0 titleleft">deviceId : <span class="span-color">${alldevice.deviceid}</span></h5>
+                                    <h5 class="card-text  titleleft">deviceKey : <span class="span-color">${alldevice.devicekey}</span></h5>											
                                     <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(alldevice.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     `)
@@ -112,7 +118,7 @@ var index = (function () {
     }
     function _renderAllthingCard () {
         $.ajax({
-            url: 'http://127.0.0.1:3000/things',
+            url: 'http://127.0.0.1:3000/info/view',
             type: 'get',
             dataType: 'json',
             xhrFields: {
@@ -121,6 +127,7 @@ var index = (function () {
             success: function (data) {
                 console.log('===================');
                 console.log(data);
+                _userViewThing = data;
                 $('#randerallthing').html('');
                 for (let allthing of data) {
                     $('#randerallthing').prepend(`
@@ -133,11 +140,12 @@ var index = (function () {
                                     <h5 class="card-subtitle mb-2 text-muted titleleft">thingtype: 
                                         <span>${allthing.thingtype}</span>
                                     </h5>
-                                    <h4 class="card-text mb-0 titleleft text-dark">owner: <span class="badge badge-secondary mt-2  text-ligth">${allthing.owner}</span></h4>
-                                    <h5 class="card-text mb-0 titleleft">ThingId: <span class="text-warning">${allthing.thingid}</span></h5>
-                                    <h5 class="card-text  titleleft">ThingKey: <span class="text-danger">${allthing.thingkey}</span></h5>											
-                                    <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(allthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
-                                </div>
+                                    <h4 class="card-text mb-0 titleleft text-dark">owner: <span class="badge badge-secondary mt-2  text-ligth">${allthing.owner}</span><span class="fa fa-heart  btn-getThingInfo ml-1" data-allthingid="${allthing._id}" data-allthingname="${allthing.thingname}"></sapn></h4>
+                                    ${allthing.thingid ? `<h5 class="card-text mb-0 titleleft">ThingId : <span class="text-danger">${allthing.thingid}</span></h5>`:'<h5 class="card-text mb-0 titleleft">ThingId : <span class="text-danger">＊＊＊＊＊＊＊＊＊＊</span></h5>'}    
+                                    ${allthing.thingkey ? `<h5 class="card-text  titleleft">ThingKey : <span class="text-danger">${allthing.thingkey}</span></h5>`:'<h5 class="card-text mb-0 titleleft">ThingKey : <span class="text-danger">＊＊＊＊＊＊＊＊＊＊</span></h5>'}											
+                                    <h6 class="card-subtitle mb-2 mt-1 text-muted titleright ">create at: <span>${moment(allthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
+                                    <h6 class="titleleft"><a class="card-link btn-readmoreAllthing " data-allthingid="${allthing._id}" href="javascript:;" >read more...</a></h6>                                    
+                                    </div>
                             </div>
                         </div>
                     `)
@@ -159,6 +167,7 @@ var index = (function () {
                 withCredentials: true
             },
             success: function (data) {
+                _userThing = data;
                 console.log('===================');
                 console.log(data);
                 $('#randermything').html('');
@@ -179,10 +188,13 @@ var index = (function () {
                                         ${_userInfo ? `<span data-thingid="${cardthing._id}" class="fa fa-pencil btn-editthing" ></span>` : ''}
                                     </button>
                                 </h5>
-                                <h4 class="card-text mb-0 titleleft text-light"><a class="badge badge-info mt-2">Thing</a></h4>                                
-                                <h5 class="card-text mb-0 titleleft">ThingId: <span class="text-warning">${cardthing.thingid}</span></h5>
-                                <h5 class="card-text  titleleft">ThingKey: <span class="span-color">${cardthing.thingkey}</span></h5>											
+                                <h4 class="card-text mb-0 titleleft text-primary">Interested users <button type="button" class="btn btn-info btn-sm btn-thingNewUser" data-thingid="${cardthing._id}">
+                                NEW <span class="badge badge-light">${cardthing.interest.length}</span>
+                                </button></h4>                                
+                                <h5 class="card-text mb-0 titleleft">ThingId : <span class="text-warning">${cardthing.thingid}</span></h5>
+                                <h5 class="card-text  titleleft">ThingKey : <span class="span-color">${cardthing.thingkey}</span></h5>											
                                 <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(cardthing.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
+                                <h6 class="titleleft"><a class="card-link btn-readmore " data-thingid="${cardthing._id}" href="javascript:;" >read more...</a></h6>
                             </div>
                         </div>
                     </div>
@@ -226,8 +238,8 @@ var index = (function () {
                                         </button>
                                     </h5>
                                     <h4 class="card-text mb-0 titleleft text-light"><a class="badge badge-info mt-2">Device</a></h4>                                                                       
-                                    <h5 class="card-text mb-0 titleleft">deviceId: <span class="text-warning">${randerdevice.deviceid}</span></h5>
-                                    <h5 class="card-text  titleleft">deviceKey: <span class="span-color">${randerdevice.devicekey}</span></h5>											
+                                    <h5 class="card-text mb-0 titleleft">deviceId : <span class="text-warning">${randerdevice.deviceid}</span></h5>
+                                    <h5 class="card-text  titleleft">deviceKey : <span class="span-color">${randerdevice.devicekey}</span></h5>											
                                     <h6 class="card-subtitle mb-2 text-muted titleright ">create at: <span>${moment(randerdevice.createdAt).format('YYYY/MM/DD HH:mm:ss')}</span></h6>
                                 </div>
                             </div>
@@ -243,20 +255,20 @@ var index = (function () {
         })
     }
     function _handleLogin () {
-        $('#modal-creatbutton').addClass('hide');
+        $('#modal-createbutton').addClass('hide');
         $('#card-mything-mydevice').addClass('hide');
         $('#page-signin').removeClass('hide');
     }
     function _handleOpenAllThing () {
         $('#card-alldevice').addClass('hide');
-        $('#modal-creatbutton').addClass('hide');
+        $('#modal-createbutton').addClass('hide');
         $('#card-mything-mydevice').addClass('hide');
         $('#card-allthing').removeClass('hide');
         _renderAllthingCard ();
     }
     function _handleOpenAllDevice () {
         $('#card-allthing').addClass('hide');
-        $('#modal-creatbutton').addClass('hide');
+        $('#modal-createbutton').addClass('hide');
         $('#card-mything-mydevice').addClass('hide');
         $('#card-alldevice').removeClass('hide');
         _renderAlldeviceCard ();
@@ -301,6 +313,7 @@ var index = (function () {
                 console.log(data);
                 $('#updateThingThingname').val(data.thingname);
                 $('#updateThingThingtype').val(data.thingtype);
+                $('#updateThingDescription').val(data.description);
                 $('#modal-updatething').modal();
             },
             error: function (jqXHR) {
@@ -455,9 +468,9 @@ var index = (function () {
         }
     }
     function _handleCreatDevice() {
-        var devicename = $('#creatDeviceDevicename').val();
-        var devicetype = $('#creatDeviceDevicetype').val();
-        var devicepw = $('#creatDeviceDevicepw').val();
+        var devicename = $('#createDeviceDevicename').val();
+        var devicetype = $('#createDeviceDevicetype').val();
+        var devicepw = $('#createDeviceDevicepw').val();
         console.log(devicename);
         console.log(devicetype);
         $.ajax({
@@ -474,10 +487,10 @@ var index = (function () {
                 devicepw
             }),
             success: function(data) {
-                $('#modal-creatdevice').modal('hide');
-                var devicename = $('#creatDeviceDevicename').val('');
-                var devicetype = $('#creatDeviceDevicetype').val('');
-                var devicepw = $('#creatDeviceDevicepw').val('');
+                $('#modal-createdevice').modal('hide');
+                var devicename = $('#createDeviceDevicename').val('');
+                var devicetype = $('#createDeviceDevicetype').val('');
+                var devicepw = $('#createDeviceDevicepw').val('');
                 _renderDeviceCard();
                 console.log(data);
                
@@ -492,8 +505,9 @@ var index = (function () {
         })
     }
     function _handleCreatThing () {
-        var thingname = $("#creatThingThingname").val();
-        var thingtype = $('#creatThingThingtype').val();
+        var thingname = $("#createThingThingname").val();
+        var thingtype = $('#createThingThingtype').val();
+        var description = $('#createThingDescription').val();
         $.ajax({
             url: 'http://127.0.0.1:3000/things',
             type: 'post',
@@ -504,12 +518,14 @@ var index = (function () {
             },
             data: JSON.stringify({
                 thingname,
-                thingtype
+                thingtype,
+                description
             }),
             success: function (data) {
-                $('#modal-creatthing').modal('hide');
-                var thingname = $("#creatThingThingname").val('');
-                var thingtype = $('#creatThingThingtype').val('');
+                $('#modal-creatething').modal('hide');
+                $("#createThingThingname").val('');
+                $('#createThingThingtype').val('');
+                $('#createThingDescription').val('');
                 _renderThingCard ();
                 console.log(data);
             },
@@ -562,6 +578,7 @@ var index = (function () {
         console.log(thingid);
         var thingname = $('#updateThingThingname').val();
         var thingtype = $('#updateThingThingtype').val();
+        var description = $('#updateThingDescription').val();
         $.ajax({
             url:`http://127.0.0.1:3000/things/${thingid}`,
             type: 'put',
@@ -577,6 +594,7 @@ var index = (function () {
             success: function (data) {
                 $('#updateThingThingname').val('');
                 $('#updateThingThingtype').val('');
+                $('#updateThingDescription').val('');
                 $('#modal-updatething').modal('hide');
                 location.href = '/';
             },
@@ -644,5 +662,120 @@ var index = (function () {
                 alert("Success logout");
             }   
         })
+    }
+    function _handleThingReadMore() {
+        var id = $(this).data('thingid');
+        $('#modal-thingContent').modal();
+        var readthing = _userThing;
+        for( let thing of readthing){
+            let thing_id = JSON.stringify(thing._id);
+            let thingid = JSON.stringify(id);
+            if(thing_id === thingid){
+                $('#thihgTitle').text(thing.thingname);
+                $('#thingid').text(thing.thingid);
+                $('#thingkey').text(thing.thingkey);
+                $('#thingdescription').text(thing.description);
+                $('#thingTime').text(moment(thing.createdAt).format('YYYY/MM/DD HH:mm:ss'))
+                break;
+            }
+        }
+    }
+    function _handleAllThingReadMore () {
+        $('#allthingid').text('**********');
+        $('#allthingkey').text('**********');
+        var id = $(this).data('allthingid');
+        $('#modal-AllthingContent').modal();
+        var readallthing = _userViewThing;
+        for( let allthing of readallthing){
+            let allthing_id = JSON.stringify(allthing._id);
+            let allthingid = JSON.stringify(id);
+            if(allthing_id === allthingid){
+                $('#allthihgTitle').text(allthing.thingname);
+                $('#allthingid').text(allthing.thingid);
+                $('#allthingkey').text(allthing.thingkey);
+                $('#allthingdescription').text(allthing.description);
+                $('#allthingTime').text(moment(allthing.createdAt).format('YYYY/MM/DD HH:mm:ss'))
+                break;
+            }
+        }
+    }
+    function _handleOpenGetThingInfo () {
+        if(confirm(`Want to get [Thingname ${$(this).data('allthingname')} ] Id&key ?`)) {
+            var id = $(this).data('allthingid');
+            console.log(id);
+            $.ajax({
+                url: `http://127.0.0.1:3000/things/${id}/interest`,
+                type: 'get',
+                dataType:'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    alert('success');
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR);
+                    if(jqXHR.status==404) {
+                        alert(jqXHR.responseJSON.message);
+                    }
+                }
+            })
+        }
+        console.log("1234");
+    }
+    function _handleOpenInterestedUser () {
+        $('#userList').html('');
+        $('#InterestUser').val('');
+        var id = $(this).data('thingid');
+        var userid = _userInfo._id;
+        console.log(userid);
+        console.log(id);
+        $('#modal-interestUserList').modal();
+        $.ajax({
+            url: `http://127.0.0.1:3000/things/${id}`,
+            type: 'get',
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (data) {
+                console.log(data);
+                $('#InterestUser').text(data.thingname);
+                for(let user of data.interest) {
+                    console.log(user);
+                    $('#userList').append(`
+                        ${data.interest.length > 0 ? `<button type="button" class="btn-interestuser list-group-item list-group-item-info list-group-item-action" data-interestUserid="${user._id}" data-interestusername="${user.username}" data-interestthingid="${id}"><span class="fa fa-user mr-2"> Username: ${user.username}</span></button>`:''}
+                    `)
+                }
+            },
+            error: function(jqXHR) {
+                console.log(jqXHR);
+            }
+        })
+    }
+    function _handleAuthThingUser () {
+        var id = $(this).data('interestuserid'); 
+        var thingid = $(this).data('interestthingid');  
+        var username = $(this).data('interestusername');
+        console.log(id);
+        console.log(thingid);
+        console.log(username);
+        if(confirm(` Send Id&key to [username ${username} ] ?`)) {
+            $.ajax({
+                url: `http://127.0.0.1:3000/info/${id}/view/${thingid}`,
+                type: 'get',
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    console.log(data);
+                    _renderThingCard();
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR);
+                }
+            })            
+        }
     }
 })();
