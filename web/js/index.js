@@ -770,6 +770,7 @@ var index = (function () {
                 },
                 success: function (data) {
                     console.log(data);
+                    $('#modal-interestUserList').modal('hide');
                     _renderThingCard();
                 },
                 error: function (jqXHR) {

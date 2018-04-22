@@ -84,13 +84,6 @@ exports.findOne = function(req, res) {
             res.status(200).send(thing);
         }
     })
-
-    // function(err, thing){
-    //     if(err) {
-    //         res.status(500).send({message:'some error'})
-    //     }else {
-    //         res.status(200).send(thing);
-    //     }
 }
 
 exports.update = function(req, res) {

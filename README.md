@@ -18,24 +18,34 @@ npm start
 open browser
 (http://127.0.0.1:3000)
 ## MQTT-Server功能
+
+### 使用者
+
 #### 登入
 - 取得使用者資料
 - 新增使用者帳密
 - 修改使用者資料
-- 刪除使用者帳密
 
-#### 使用者的 Thing
+#### Thing
+- 要求獲取 其他使用者 thing&id資訊
+- 授權給予 特定使用者thing&id資訊
 - 取得所有Thing ID & Thing key
 - 新增使用者Thing ID,並發放Thing key
-- 修改 使用者Thing ID
-- 刪除使用者 Thing ID
-#### 使用者的 Device
+- 修改 使用者Thing 
+- 刪除使用者 Thing
+- 要求取得Thing id&key
+- 取得 thing資料
+
+#### Device
 - 取得所有Device ID & Device key
 - 新增 device ID 並發放Device key
-- 修改 Device ID
-- 刪除 Device ID
-#### 
+- 修改 Device
+- 刪除 Device
+
+### Admin
 - 授權 由使用者新增的device
+- 刪除使用者帳密
+
 
 | 	URI  			| HTTP Verb | Description   |finish|
 | -------- 			| --------  | --------       |------|
@@ -43,7 +53,7 @@ open browser
 | /signup      | POST      | "使用者"註冊      |O|
 | /logout    | GET       | 登出 清除 session|O|
 | /info    | GET       | 取得"某使用"者資料 |O|
-| /info/things    | GET       | 取得"某使用"者things資料 |O|
+| ~~/info/things~~    | GET       | 取得"某使用"者things資料 |O|
 | /info/devices    | GET       | 取得"某使用"者devices資料 |O|
 | /info	| PUT		| 修改"某使用者"資料 |O|
 | /users/:userId	| DELETE		| 刪除"某使用者"資料 |O|
@@ -56,6 +66,9 @@ open browser
 | /things/:thingId        | PUT       | 修改 "某個thing"|O|
 | /things/:thingId        | DELETE       | 刪除 "某個thing"|O|
 | /devices/:deviceId/state        | GET       | 授權由使用者新增的device|O|
+| /things/:thingId/interest        | GET       |要求獲取 其他使用者 thing&id資訊|O|
+| /info/:userId/view/thingId        | GET  |授權給予 特定使用者thing&id資訊|O|
+| /info/view        | GET       |取得 使用者 所有thing資料|O|
 ## Thing/device ID &Thing/device KEY
 
 |  Thing   | value | 
@@ -84,8 +97,8 @@ open browser
 	"password":(string),
 	"things":[{ type:   Schema.Types.ObjectId, ref:   'thing' }]
 	"devices":[{ type:   Schema.Types.ObjectId, ref:   'device' }],
-	"timestamp": '2017-06-16T06:25:08+00:00'
- }
+	"view":[{ type:   Schema.Types.ObjectId, ref:   'things' }],
+	"timestamp": '2017-06-16T06:25:08+00:00'}],
  ...
 ]
 ```
@@ -99,6 +112,9 @@ open browser
 	"thingname":(string),
 	"thingkey":(string),
 	"thingtype":(string),
+	"description":(string),
+	"owner":(string),
+	interest[{ type:   Schema.Types.ObjectId, ref:   'user' }],
 	"timestamp": '2017-06-16T06:25:08+00:00'
  }
  ...
@@ -133,17 +149,17 @@ POST `/signin`
 ```
 #### Res
 -	`200 (ok)`
-jeson object
+json object
     ```
     {message: "signing successfully"}
     ```
 -	`404 (err)`
-jeson object
+json object
     ```
     {message: "username or password error"}
     ```
 -	`500 (err)`
-jeson object
+json object
     ```
     {message: "system error"}
     ```
@@ -161,22 +177,22 @@ POST `/signup`
 ```
 #### Res
 -	`200 (ok)`
-jeson object
+json object
     ```
     {message: "signup successfully"}
     ```
 -	`404 (err)`
-jeson object
+json object
     ```
     {message: '傳送格式錯誤'}
     ```
 -	`202 (err)`
-jeson object
+json object
     ```
     {message: "You have already registered."}
     ```
 -	`500 (err)`
-jeson object
+json object
     ```
     {message: "system error"}
     ```
@@ -186,12 +202,12 @@ POST `/logout`
 none
 #### Res
 -	`200 (ok)`
-jeson object
+json object
     ```
     {message: "success logout"}
     ```
 -	`404 (err)`
-jeson object
+json object
     ```
     {message: "can not logout"}
     ```
@@ -207,7 +223,7 @@ POST `/thing`
 ```
 #### res
 -	`200 (OK)`
-jeson object
+json object
 ```
 {
 	"_id": "5acd99f2041f512a209d279b",
@@ -220,12 +236,12 @@ jeson object
 }
 ```
 -	`404 (err)`
-jeson object
+json object
 ```
 {message:'can not find user by UserId'}
 ```
 -	`500(err)`
-jeson object
+json object
 ```
 {message:'some error'}
 ```
@@ -242,7 +258,7 @@ POST `/device`
 ```
 #### res
 -	`200 (OK)`
-jeson object
+json object
 ```
 {
 	"_id": "5acda757952a9f10b406d596",
@@ -257,12 +273,12 @@ jeson object
 }
 ```
 -	`404 (err)`
-jeson object
+json object
 ```
 {message:'can not find user by UserId'}
 ```
 -	`500(err)`
-jeson object
+json object
 ```
 {message:'some error'}
 ```
@@ -272,7 +288,7 @@ GET `/info/things`
 none
 #### res
 -	`200`
-jeson object
+json object
 ```
 [
 	{
@@ -288,12 +304,12 @@ jeson object
 ]
 ````
 -	`404 (err)`
-jeson object
+json object
 ```
 {message: 'can not find things with userid'}
 ```
 -	`500(err)`
-jeson object
+json object
 ```
 {message:'some error'}
 ```
@@ -303,7 +319,7 @@ GET `/info/devices`
 none
 #### res
 -	`200`
-jeson object
+json object
 ```
 [
 	{
@@ -322,12 +338,12 @@ jeson object
 ````
 
 -	`404 (err)`
-jeson object
+json object
 ```
 {message: 'can not find devices with userid'}
 ```
 -	`500(err)`
-jeson object
+json object
 ```
 {message:'some error'}
 ```
@@ -343,7 +359,7 @@ PUT `/info`
 ```
 #### res
 -	`200`
-jeson object
+json object
 ```
  {
 	"_id":(strring),
@@ -358,7 +374,7 @@ jeson object
  }
 ```
 -	`403 (err)`
-jeson object
+json object
 ```
 {message: "please login"}
 ```
@@ -368,12 +384,12 @@ DELETE `/users/:userId`
 none
 #### res
 -	`200`
-jeson object
+json object
 ```
 {message: 'success remove'}
 ```
 -	`500 (err)`
-jeson object
+json object
 ```
 {message:"can not remove"}
 ```
@@ -387,7 +403,7 @@ PUT `/devices/:deviceId`
 }
 #### res
 -	`200`
-jeson object
+json object
 ```
  {
 	"_id":(strring),
@@ -401,7 +417,7 @@ jeson object
  }
 ```
 -	`403 (err)`
-jeson object
+json object
 ```
 {message: 'some error'}
 ```
@@ -413,12 +429,12 @@ DELETE `/devices/:deviceId`
 none
 #### res
 -	`200`
-jeson object
+json object
 ```
 {message: 'success remove'}
 ```
 -	`500 (err)`
-jeson object
+json object
 ```
 {message:"some error"}
 ```
@@ -432,7 +448,7 @@ PUT `/things/:thingId`
 }
 #### res
 -	`200`
-jeson object
+json object
 ```
  {
 	"_id":(strring),
@@ -444,7 +460,7 @@ jeson object
  }
 ```
 -	`403 (err)`
-jeson object
+json object
 ```
 {message: 'some error'}
 ```
@@ -455,12 +471,12 @@ DELETE `/things/:thingId`
 none
 #### res
 -	`200`
-jeson object
+json object
 ```
 {message: 'success remove'}
 ```
 -	`500 (err)`
-jeson object
+json object
 ```
 {message:"can not remove"}
 ```
@@ -471,7 +487,7 @@ GET `/devices/:deviceId/state`
 none
 #### res
 -	`200`
-jeson object
+json object
 ```
 {message:"deviceId : 1"})
 ```
@@ -480,7 +496,83 @@ jeson object
 {message:'can not find device'}
 ```
 -	`500 (err)`
-jeson object
+json object
 ```
 {message:"can not remove"}
+```
+
+### 要求獲取 其他使用者 thing&id資訊
+GET `/things/:thingId/interest`
+#### req
+none
+#### res
+-	`200`
+json object
+```
+{message:'success'})
+```
+- `404`
+```
+{message:"has sent request"}
+```
+-	`500 (err)`
+json object
+```
+{message:"some error"}
+```
+
+### 授權給予 特定使用者thing&id資訊
+GET `/info/:userId/view/thingId`
+#### req
+none
+#### res
+-	`200`
+json object
+```
+{message:'success'})
+```
+
+-	`500 (err)`
+json object
+```
+{message:"some error"}
+```
+
+### 取得 使用者 所有thing資料
+GET `/info/view`
+#### req
+none
+#### res
+-	`200`
+json object
+```
+[
+	{
+		"interest": [],
+		"_id": "5ad61e458dc53d0ac461d10a",
+		"thingname": "White House",
+		"thingtype": "humidity",
+		"owner": "Tomato",
+		"createdAt": "2018-04-17T16:18:13.091Z",
+		"updatedAt": "2018-04-17T16:18:13.091Z"
+	},
+	{
+		"interest": [],
+		"_id": "5ad9888e17ec700ef46953e7",
+		"thingname": "Room 33",
+		"thingtype": "IOT",
+		"owner": "admin",
+		"createdAt": "2018-04-20T06:28:30.257Z",
+		"updatedAt": "2018-04-20T06:28:30.257Z",
+		"thingid": "546fad561555d21409aa65fcd9aa4d66",
+		"thingkey": "dcbe74d541855b523ee65308a819c4ba"
+	}
+	...
+]
+```
+
+-	`500 (err)`
+json object
+```
+{message:"some error"}
 ```
